@@ -142,11 +142,11 @@ describe BuildReport do
 
     def stubbed_github_api
       github_api = double(
-        'GithubApi',
+        'GitlabApi',
         create_success_status: nil,
         create_error_status: nil
       )
-      allow(GithubApi).to receive(:new).and_return(github_api)
+      allow(GitlabApi).to receive(:new).and_return(github_api)
 
       github_api
     end

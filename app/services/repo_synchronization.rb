@@ -17,7 +17,7 @@ class RepoSynchronization
   private
 
   def api
-    @api ||= GithubApi.new(user.token)
+    @api ||= GitlabApi.new(user.token)
   end
 
   def repo_attributes(attributes)
@@ -27,7 +27,7 @@ class RepoSynchronization
       private: attributes[:private],
       github_id: attributes[:id],
       full_github_name: attributes[:full_name],
-      in_organization: attributes[:owner][:type] == GithubApi::ORGANIZATION_TYPE,
+      in_organization: attributes[:owner][:type] == GitlabApi::ORGANIZATION_TYPE,
       owner: owner
     }
   end
@@ -36,7 +36,7 @@ class RepoSynchronization
     Owner.upsert(
       github_id: owner_attributes[:id],
       name: owner_attributes[:login],
-      organization: owner_attributes[:type] == GithubApi::ORGANIZATION_TYPE
+      organization: owner_attributes[:type] == GitlabApi::ORGANIZATION_TYPE
     )
   end
 end

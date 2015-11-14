@@ -148,8 +148,8 @@ describe RepoSynchronization do
         }
       }
       resource = double(:resource, to_hash: attributes)
-      api = double('GithubApi', repos: [resource])
-      allow(GithubApi).to receive(:new).and_return(api)
+      api = double('GitlabApi', repos: [resource])
+      allow(GitlabApi).to receive(:new).and_return(api)
     end
   end
 end

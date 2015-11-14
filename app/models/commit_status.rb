@@ -38,6 +38,6 @@ class CommitStatus
   end
 
   def github
-    @github ||= GithubApi.new(token)
+    @github ||= GitlabApi.new(token)
   end
 end

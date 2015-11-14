@@ -224,8 +224,8 @@ describe RepoActivator do
       it 'does not raise' do
         repo = build(:repo, private: true)
         activator = build_activator(repo: repo)
-        github = double('GithubApi', create_hook: nil, add_collaborator: true)
-        allow(GithubApi).to receive(:new).and_return(github)
+        github = double('GitlabApi', create_hook: nil, add_collaborator: true)
+        allow(GitlabApi).to receive(:new).and_return(github)
 
         expect { activator.activate }.not_to raise_error
       end
@@ -293,7 +293,7 @@ describe RepoActivator do
     context 'when repo deactivation fails' do
       it 'returns false' do
         activator = build_activator
-        allow(GithubApi).to receive(:new).and_raise(Octokit::Error.new)
+        allow(GitlabApi).to receive(:new).and_raise(Octokit::Error.new)
 
         result = activator.deactivate
 
@@ -303,7 +303,7 @@ describe RepoActivator do
       it 'only swallows Octokit errors' do
         error = StandardError.new('this should bubble through')
         activator = build_activator
-        expect(GithubApi).to receive(:new).and_raise(error)
+        expect(GitlabApi).to receive(:new).and_raise(error)
 
         expect { activator.deactivate }.to raise_error(error)
       end
@@ -333,7 +333,7 @@ describe RepoActivator do
     allow(api).to receive(:create_hook).and_yield(hook)
     allow(api).to receive(:add_collaborator).and_return(true)
     allow(api).to receive(:remove_collaborator).and_return(true)
-    allow(GithubApi).to receive(:new).and_return(api)
+    allow(GitlabApi).to receive(:new).and_return(api)
     api
   end
 end

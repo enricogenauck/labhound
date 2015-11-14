@@ -58,11 +58,11 @@ class PullRequest
   end
 
   def user_github
-    @user_github ||= GithubApi.new(token)
+    @user_github ||= GitlabApi.new(token)
   end
 
   def hound_github
-    @hound_github ||= GithubApi.new(Hound::GITHUB_TOKEN)
+    @hound_github ||= GitlabApi.new(Hound::GITHUB_TOKEN)
   end
 
   def number

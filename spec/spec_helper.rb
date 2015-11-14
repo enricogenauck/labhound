@@ -10,7 +10,7 @@ Dir['spec/support/**/*.rb'].each { |f| require f }
 
 RSpec.configure do |config|
   config.order = 'random'
-  config.include GithubApiHelper
+  config.include GitlabApiHelper
   config.include StripeApiHelper
   WebMock.disable_net_connect!(allow_localhost: true)
 end

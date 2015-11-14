@@ -133,7 +133,7 @@ describe PullRequest do
   end
 
   def pull_request_stub(api, payload = payload_stub)
-    allow(GithubApi).to receive(:new).and_return(api)
+    allow(GitlabApi).to receive(:new).and_return(api)
     PullRequest.new(payload, token)
   end
 end

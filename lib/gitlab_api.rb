@@ -2,7 +2,7 @@ require 'attr_extras'
 require 'octokit'
 require 'base64'
 
-class GithubApi
+class GitlabApi
   ORGANIZATION_TYPE = 'Organization'
   PREVIEW_MEDIA_TYPE = 'application/vnd.github.moondragon+json'
 

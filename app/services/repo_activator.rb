@@ -48,7 +48,7 @@ class RepoActivator
   end
 
   def github
-    @github ||= GithubApi.new(github_token)
+    @github ||= GitlabApi.new(github_token)
   end
 
   def create_webhook
