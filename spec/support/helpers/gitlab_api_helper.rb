@@ -161,44 +161,14 @@ module GitlabApiHelper
   private
 
   def stub_repos_requests(token)
-    repos_url = 'https://api.github.com/user/repos'
-
     stub_request(
       :get,
-      "#{repos_url}?per_page=100"
+      "#{gitlab_url}/projects"
     ).with(
-      headers: { 'Authorization' => "token #{token}" }
+      headers: { 'PRIVATE-TOKEN' => token }
     ).to_return(
       status: 200,
-      body: File.read('spec/support/fixtures/github_repos_response_for_jimtom.json'),
-      headers: {
-        'Link' => %(<#{repos_url}?page=2&per_page=100>; rel="next"),
-        'Content-Type' => 'application/json; charset=utf-8'
-      }
-    )
-
-    stub_request(
-      :get,
-      "#{repos_url}?page=2&per_page=100"
-    ).with(
-      headers: { 'Authorization' => "token #{token}" }
-    ).to_return(
-      status: 200,
-      body: File.read('spec/support/fixtures/github_repos_response_for_jimtom_page2.json'),
-      headers: {
-        'Link' => %(<#{repos_url}?page=3&per_page=100>; rel="next"),
-        'Content-Type' => 'application/json; charset=utf-8'
-      }
-    )
-
-    stub_request(
-      :get,
-      "#{repos_url}?page=3&per_page=100"
-    ).with(
-      headers: { 'Authorization' => "token #{token}" }
-    ).to_return(
-      status: 200,
-      body: '[]',
+      body: File.read("#{fixture_dir}/github_repos_response_for_jimtom.json"),
       headers: { 'Content-Type' => 'application/json; charset=utf-8' }
     )
   end
@@ -277,5 +247,13 @@ module GitlabApiHelper
 
   def hound_token
     Hound::GITHUB_TOKEN
+  end
+
+  def fixture_dir
+    'spec/support/fixtures'
+  end
+
+  def gitlab_url
+    Hound::GITLAB_API_URL
   end
 end

@@ -67,7 +67,10 @@ class SessionsController < ApplicationController
   end
 
   def scopes_changed?
-    user.token_scopes != token_scopes
+    # TODO: check if this needed for Gitlab
+    # user.token_scopes != token_scopes
+
+    false
   end
 
   def token_scopes

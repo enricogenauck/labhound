@@ -20,7 +20,10 @@ gem 'high_voltage'
 gem 'jquery-rails', '~> 3.1.3'
 gem 'jshintrb'
 gem 'neat'
+
 gem 'octokit'
+gem 'gitlab'
+
 gem 'omniauth-github'
 gem 'paranoia', '~> 2.0'
 gem 'pg'
