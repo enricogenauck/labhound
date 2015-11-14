@@ -51,7 +51,7 @@ class SubscriptionsController < ApplicationController
   def check_subscription_presence
     if repo.subscription.blank?
       render(
-        json: { errors: ["No subscription exists for this repo"] },
+        json: { errors: ['No subscription exists for this repo'] },
         status: :conflict
       )
     end

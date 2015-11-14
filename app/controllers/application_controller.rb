@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
   def force_https
     if Hound::HTTPS_ENABLED
       if !request.ssl? && force_https?
-        redirect_to protocol: "https://", status: :moved_permanently
+        redirect_to protocol: 'https://', status: :moved_permanently
       end
     end
   end
@@ -25,7 +25,7 @@ class ApplicationController < ActionController::Base
     session[:campaign_params] ||= {
       utm_campaign: params[:utm_campaign],
       utm_medium: params[:utm_medium],
-      utm_source: params[:utm_source],
+      utm_source: params[:utm_source]
     }
   end
 

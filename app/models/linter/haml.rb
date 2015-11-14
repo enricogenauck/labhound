@@ -1,6 +1,6 @@
 module Linter
   class Haml < Base
-    DEFAULT_CONFIG_FILENAME = "haml.yml"
+    DEFAULT_CONFIG_FILENAME = 'haml.yml'
     FILE_REGEXP = /.+\.haml\z/
 
     def file_review(commit_file)
@@ -25,7 +25,7 @@ module Linter
     private
 
     def file_excluded?(filename)
-      HamlLint::Utils.any_glob_matches?(linter_config["exclude"], filename)
+      HamlLint::Utils.any_glob_matches?(linter_config['exclude'], filename)
     end
 
     attr_reader :commit_file
@@ -34,7 +34,7 @@ module Linter
       HamlLint::Document.new(
         commit_file.content,
         file: commit_file.filename,
-        config: linter_config,
+        config: linter_config
       )
     end
 
@@ -46,8 +46,8 @@ module Linter
     end
 
     def linters
-      HamlLint::LinterSelector.new(linter_config, {}).
-        linters_for_file(commit_file.filename)
+      HamlLint::LinterSelector.new(linter_config, {})
+        .linters_for_file(commit_file.filename)
     end
 
     def linter_config

@@ -9,15 +9,15 @@ module AnalyticsHelper
       email: user.email_address,
       username: user.github_username,
       user_id: user.id,
-      active_repo_ids: user.active_repos.ids,
+      active_repo_ids: user.active_repos.ids
     }
   end
 
   def intercom_hash(user = current_user)
     {
-      "Intercom" => {
+      'Intercom' => {
         userHash: OpenSSL::HMAC.hexdigest(
-          "sha256",
+          'sha256',
           Hound::INTERCOM_API_SECRET,
           user.id.to_s
         )

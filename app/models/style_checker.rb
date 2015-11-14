@@ -19,7 +19,7 @@ class StyleChecker
       filename: filename,
       hound_config: hound_config,
       build: build,
-      repository_owner_name: pull_request.repository_owner_name,
+      repository_owner_name: pull_request.repository_owner_name
     )
   end
 

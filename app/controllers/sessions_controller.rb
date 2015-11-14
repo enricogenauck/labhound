@@ -9,7 +9,7 @@ class SessionsController < ApplicationController
       update_scopes
     end
 
-    finished("auth_button")
+    finished('auth_button')
     redirect_to repos_path
   end
 
@@ -36,7 +36,7 @@ class SessionsController < ApplicationController
     user = User.create!(
       github_username: github_username,
       email_address: github_email_address,
-      utm_source: session[:campaign_params].try(:[], :utm_source),
+      utm_source: session[:campaign_params].try(:[], :utm_source)
     )
     flash[:signed_up] = true
     user
@@ -55,15 +55,15 @@ class SessionsController < ApplicationController
   end
 
   def github_username
-    request.env["omniauth.auth"]["info"]["nickname"]
+    request.env['omniauth.auth']['info']['nickname']
   end
 
   def github_email_address
-    request.env["omniauth.auth"]["info"]["email"]
+    request.env['omniauth.auth']['info']['email']
   end
 
   def github_token
-    request.env["omniauth.auth"]["credentials"]["token"]
+    request.env['omniauth.auth']['credentials']['token']
   end
 
   def scopes_changed?

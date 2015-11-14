@@ -1,13 +1,13 @@
-require "rails_helper"
+require 'rails_helper'
 
 describe Owner do
   it { should have_many(:repos) }
 
-  describe ".upsert" do
-    context "when owner does not exist" do
-      it "creates owner" do
+  describe '.upsert' do
+    context 'when owner does not exist' do
+      it 'creates owner' do
         github_id = 1234
-        name = "thoughtbot"
+        name = 'thoughtbot'
         organization = true
 
         new_owner = Owner.upsert(
@@ -20,10 +20,10 @@ describe Owner do
       end
     end
 
-    context "when owner exists" do
-      it "updates owner" do
+    context 'when owner exists' do
+      it 'updates owner' do
         owner = create(:owner)
-        new_name = "ralphbot"
+        new_name = 'ralphbot'
 
         updated_owner = Owner.upsert(
           github_id: owner.github_id,

@@ -15,12 +15,12 @@ module Retryable
   end
 
   def serialize
-    super.merge("attempts" => attempts + 1)
+    super.merge('attempts' => attempts + 1)
   end
 
   def deserialize(job_data)
     super
-    @attempts = job_data["attempts"]
+    @attempts = job_data['attempts']
   end
 
   def attempts

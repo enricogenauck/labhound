@@ -1,10 +1,10 @@
-require "attr_extras"
-require "octokit"
-require "base64"
+require 'attr_extras'
+require 'octokit'
+require 'base64'
 
 class GithubApi
-  ORGANIZATION_TYPE = "Organization"
-  PREVIEW_MEDIA_TYPE = "application/vnd.github.moondragon+json"
+  ORGANIZATION_TYPE = 'Organization'
+  PREVIEW_MEDIA_TYPE = 'application/vnd.github.moondragon+json'
 
   attr_reader :file_cache, :token
 
@@ -18,7 +18,7 @@ class GithubApi
   end
 
   def scopes
-    client.scopes(token).join(",")
+    client.scopes(token).join(',')
   end
 
   def repos
@@ -44,9 +44,9 @@ class GithubApi
   def create_hook(full_repo_name, callback_endpoint)
     hook = client.create_hook(
       full_repo_name,
-      "web",
+      'web',
       { url: callback_endpoint },
-      { events: ["pull_request"], active: true }
+      { events: ['pull_request'], active: true }
     )
 
     if block_given?
@@ -55,7 +55,7 @@ class GithubApi
       hook
     end
   rescue Octokit::UnprocessableEntity => error
-    if error.message.include? "Hook already exists"
+    if error.message.include? 'Hook already exists'
       true
     else
       raise
@@ -89,7 +89,7 @@ class GithubApi
     create_status(
       repo: full_repo_name,
       sha: sha,
-      state: "pending",
+      state: 'pending',
       description: description
     )
   end
@@ -98,7 +98,7 @@ class GithubApi
     create_status(
       repo: full_repo_name,
       sha: sha,
-      state: "success",
+      state: 'success',
       description: description
     )
   end
@@ -107,7 +107,7 @@ class GithubApi
     create_status(
       repo: full_repo_name,
       sha: sha,
-      state: "error",
+      state: 'error',
       description: description,
       target_url: target_url
     )
@@ -117,7 +117,7 @@ class GithubApi
     client.add_collaborator(
       repo_name,
       username,
-      accept: "application/vnd.github.ironman-preview+json",
+      accept: 'application/vnd.github.ironman-preview+json'
     )
   end
 
@@ -126,7 +126,7 @@ class GithubApi
     client.remove_collaborator(
       repo_name,
       username,
-      accept: "application/vnd.github.ironman-preview+json",
+      accept: 'application/vnd.github.ironman-preview+json'
     )
   end
 
@@ -141,7 +141,7 @@ class GithubApi
       repo,
       sha,
       state,
-      context: "hound",
+      context: 'hound',
       description: description,
       target_url: target_url
     )

@@ -10,7 +10,7 @@ Houndapp::Application.configure do
 
   # Configure static asset server for tests with Cache-Control for performance
   config.serve_static_files = true
-  config.static_cache_control = "public, max-age=3600"
+  config.static_cache_control = 'public, max-age=3600'
 
   # Show full error reports and disable caching
   config.consider_all_requests_local       = true
@@ -26,7 +26,7 @@ Houndapp::Application.configure do
   # The :test delivery method accumulates sent emails in the
   # ActionMailer::Base.deliveries array.
   config.action_mailer.delivery_method = :test
-  config.action_mailer.default_url_options = { host: ENV["HOST"] }
+  config.action_mailer.default_url_options = { host: ENV['HOST'] }
 
   # Print deprecation notices to the stderr
   config.active_support.deprecation = :stderr

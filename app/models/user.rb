@@ -23,7 +23,7 @@ class User < ActiveRecord::Base
   end
 
   def has_repos_with_missing_information?
-    repos.where("in_organization IS NULL OR private IS NULL").count > 0
+    repos.where('in_organization IS NULL OR private IS NULL').count > 0
   end
 
   def has_active_repos?
@@ -44,7 +44,7 @@ class User < ActiveRecord::Base
 
   def has_access_to_private_repos?
     if token_scopes
-      token_scopes.split(",").include? "repo"
+      token_scopes.split(',').include? 'repo'
     else
       false
     end

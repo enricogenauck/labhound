@@ -1,5 +1,5 @@
 namespace :repo do
-  desc "Delete repos with no memberships"
+  desc 'Delete repos with no memberships'
   task remove_without_memberships: :environment do
     ActiveRecord::Base.connection.execute <<-SQL
       DELETE FROM repos
@@ -14,7 +14,7 @@ namespace :repo do
     SQL
   end
 
-  desc "Delete repos with duplicate github_ids"
+  desc 'Delete repos with duplicate github_ids'
   task remove_duplicate_github_ids: :environment do
     ActiveRecord::Base.connection.execute <<-SQL
       WITH del AS (

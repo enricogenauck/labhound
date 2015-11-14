@@ -1,16 +1,16 @@
-require "rails_helper"
+require 'rails_helper'
 
 describe RepoSynchronizationJob do
-  it "is retryable" do
+  it 'is retryable' do
     expect(RepoSynchronizationJob.new).to be_a(Retryable)
   end
 
-  it "queue_as high" do
-    expect(RepoSynchronizationJob.new.queue_name).to eq("high")
+  it 'queue_as high' do
+    expect(RepoSynchronizationJob.new.queue_name).to eq('high')
   end
 
-  describe "perform" do
-    it "syncs repos and sets refreshing_repos to false" do
+  describe 'perform' do
+    it 'syncs repos and sets refreshing_repos to false' do
       user = create(:user, refreshing_repos: false)
       synchronization = double(:repo_synchronization, start: nil)
       allow(RepoSynchronization).to receive(:new).and_return(synchronization)

@@ -21,14 +21,14 @@ class ReportInvalidConfig
     @commit_status ||= CommitStatus.new(
       repo_name: build.repo_name,
       sha: commit_sha,
-      token: Hound::GITHUB_TOKEN,
+      token: Hound::GITHUB_TOKEN
     )
   end
 
   def build
     @build ||= Build.find_by!(
       pull_request_number: pull_request_number,
-      commit_sha: commit_sha,
+      commit_sha: commit_sha
     )
   end
 end

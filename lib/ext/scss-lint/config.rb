@@ -7,7 +7,7 @@ module SCSSLint
       config_file_tmp_dir = Dir.tmpdir
       abs_path = File.expand_path(file_path, config_file_tmp_dir)
 
-      @options.fetch("exclude", []).any? do |exclusion_glob|
+      @options.fetch('exclude', []).any? do |exclusion_glob|
         File.fnmatch(exclusion_glob, abs_path)
       end
     end

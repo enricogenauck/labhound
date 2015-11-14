@@ -1,9 +1,9 @@
-require "rails_helper"
+require 'rails_helper'
 
 describe UpdateStripeMetadata do
-  describe "#run" do
-    context "updates successfully" do
-      it "updates stripe metadata with repo id" do
+  describe '#run' do
+    context 'updates successfully' do
+      it 'updates stripe metadata with repo id' do
         user = create(:user, stripe_customer_id: stripe_customer_id)
         subscription = create(:subscription, user: user)
         stub_customer_find_request
@@ -17,8 +17,8 @@ describe UpdateStripeMetadata do
       end
     end
 
-    context "when repo does not have a subscription" do
-      it "does not make a request to Stripe" do
+    context 'when repo does not have a subscription' do
+      it 'does not make a request to Stripe' do
         subscription = create(:subscription)
         stub_customer_find_request
         stripe_update_request =
@@ -29,8 +29,8 @@ describe UpdateStripeMetadata do
         expect(stripe_update_request).not_to have_been_requested
       end
 
-      context "when stripe_customer_id is missing" do
-        it "does not make a request to Stripe" do
+      context 'when stripe_customer_id is missing' do
+        it 'does not make a request to Stripe' do
           user = create(:user, stripe_customer_id: nil)
           repo = create(:repo, private: true)
           create(

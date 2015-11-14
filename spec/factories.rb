@@ -3,7 +3,7 @@ FactoryGirl.define do
   sequence(:github_name) { |n| "github_name#{n}" }
 
   factory :build do
-    commit_sha "somesha"
+    commit_sha 'somesha'
     repo
   end
 
@@ -14,7 +14,7 @@ FactoryGirl.define do
 
     build
 
-    filename "the_thing.rb"
+    filename 'the_thing.rb'
   end
 
   factory :repo do
@@ -56,7 +56,7 @@ FactoryGirl.define do
 
     patch_position 1
     line_number 42
-    messages ["Trailing whitespace detected."]
+    messages ['Trailing whitespace detected.']
   end
 
   factory :owner do
@@ -65,8 +65,8 @@ FactoryGirl.define do
   end
 
   factory :bulk_customer do
-    org "bulk_org"
-    interval "monthly"
+    org 'bulk_org'
+    interval 'monthly'
     repo_limit 5
   end
 end

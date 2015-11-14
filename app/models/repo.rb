@@ -54,17 +54,17 @@ class Repo < ActiveRecord::Base
   end
 
   def total_violations
-    Violation.
-      joins(:file_review).
-      where(file_reviews: { build_id: build_ids }).
-      count
+    Violation
+      .joins(:file_review)
+      .where(file_reviews: { build_id: build_ids })
+      .count
   end
 
   private
 
   def organization
     if full_github_name
-      full_github_name.split("/").first
+      full_github_name.split('/').first
     end
   end
 
@@ -73,7 +73,7 @@ class Repo < ActiveRecord::Base
       error,
       extra: {
         github_id: attributes[:github_id],
-        full_github_name: attributes[:full_github_name],
+        full_github_name: attributes[:full_github_name]
       }
     )
   end

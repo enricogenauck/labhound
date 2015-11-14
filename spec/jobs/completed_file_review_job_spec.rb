@@ -1,8 +1,8 @@
-require "rails_helper"
+require 'rails_helper'
 
 describe CompletedFileReviewJob do
-  describe ".perform" do
-    it "completes FileReview with violations" do
+  describe '.perform' do
+    it 'completes FileReview with violations' do
       file_review = create_file_review
       stub_build_report_run
       stub_pull_request
@@ -15,7 +15,7 @@ describe CompletedFileReviewJob do
       expect(file_review.violations).to be_present
     end
 
-    it "runs Build Report" do
+    it 'runs Build Report' do
       file_review = create_file_review
       build = file_review.build
       stub_build_report_run
@@ -27,15 +27,15 @@ describe CompletedFileReviewJob do
       expect(BuildReport).to have_received(:run).with(
         pull_request: pull_request,
         build: build,
-        token: Hound::GITHUB_TOKEN,
+        token: Hound::GITHUB_TOKEN
       )
       expect(Payload).to have_received(:new).with(build.payload)
-      expect(PullRequest).
-        to(have_received(:new).with(payload, Hound::GITHUB_TOKEN))
+      expect(PullRequest)
+        .to(have_received(:new).with(payload, Hound::GITHUB_TOKEN))
     end
 
     context "when build doesn't exist" do
-      it "enqueues job with a 30 second delay" do
+      it 'enqueues job with a 30 second delay' do
         allow(Resque).to receive(:enqueue_in)
 
         CompletedFileReviewJob.perform(attributes)
@@ -46,8 +46,8 @@ describe CompletedFileReviewJob do
       end
     end
 
-    context "when Resque process is killed" do
-      it "enqueues job" do
+    context 'when Resque process is killed' do
+      it 'enqueues job' do
         allow(Build).to(
           receive(:find_by!).and_raise(Resque::TermException.new(1))
         )
@@ -61,18 +61,18 @@ describe CompletedFileReviewJob do
       end
     end
 
-    context "when there are two builds with the same commit_sha" do
-      it "finds the correct build by pull request number" do
-        create(:build, commit_sha: "abc123", pull_request_number: 1)
+    context 'when there are two builds with the same commit_sha' do
+      it 'finds the correct build by pull request number' do
+        create(:build, commit_sha: 'abc123', pull_request_number: 1)
         correct_build = create(
           :build,
-          commit_sha: "abc123",
+          commit_sha: 'abc123',
           pull_request_number: 123
         )
         create(
           :file_review,
           build: correct_build,
-          filename: attributes.fetch("filename")
+          filename: attributes.fetch('filename')
         )
         stub_build_report_run
         pull_request = stub_pull_request
@@ -83,7 +83,7 @@ describe CompletedFileReviewJob do
         expect(BuildReport).to have_received(:run).with(
           pull_request: pull_request,
           build: correct_build,
-          token: Hound::GITHUB_TOKEN,
+          token: Hound::GITHUB_TOKEN
         )
       end
     end
@@ -91,12 +91,12 @@ describe CompletedFileReviewJob do
 
   def attributes
     @attributes ||= {
-      "filename" => "test.scss",
-      "commit_sha" => "abc123",
-      "pull_request_number" => 123,
-      "patch" => File.read("spec/support/fixtures/patch.diff"),
-      "violations" => [
-        { "line" => 14, "message" => "woohoo" }
+      'filename' => 'test.scss',
+      'commit_sha' => 'abc123',
+      'pull_request_number' => 123,
+      'patch' => File.read('spec/support/fixtures/patch.diff'),
+      'violations' => [
+        { 'line' => 14, 'message' => 'woohoo' }
       ]
     }
   end
@@ -104,10 +104,10 @@ describe CompletedFileReviewJob do
   def create_file_review
     build = build(
       :build,
-      commit_sha: attributes.fetch("commit_sha"),
-      pull_request_number: attributes.fetch("pull_request_number")
+      commit_sha: attributes.fetch('commit_sha'),
+      pull_request_number: attributes.fetch('pull_request_number')
     )
-    create(:file_review, build: build, filename: attributes.fetch("filename"))
+    create(:file_review, build: build, filename: attributes.fetch('filename'))
   end
 
   def stub_build_report_run
@@ -115,14 +115,14 @@ describe CompletedFileReviewJob do
   end
 
   def stub_pull_request
-    pull_request = double("PullRequest")
+    pull_request = double('PullRequest')
     allow(PullRequest).to receive(:new).and_return(pull_request)
 
     pull_request
   end
 
   def stub_payload
-    payload = double("Payload")
+    payload = double('Payload')
     allow(Payload).to receive(:new).and_return(payload)
 
     payload

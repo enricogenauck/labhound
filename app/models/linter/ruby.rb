@@ -1,7 +1,7 @@
 # Determine Ruby style guide violations per-line.
 module Linter
   class Ruby < Base
-    DEFAULT_CONFIG_FILENAME = "ruby.yml"
+    DEFAULT_CONFIG_FILENAME = 'ruby.yml'
     FILE_REGEXP = /.+\.rb\z/
 
     def file_review(commit_file)
@@ -30,7 +30,7 @@ module Linter
       RuboCop::Cop::Team.new(
         RuboCop::Cop::Cop.all,
         linter_config,
-        rubocop_options,
+        rubocop_options
       )
     end
 
@@ -40,7 +40,7 @@ module Linter
     end
 
     def linter_config
-      @linter_config ||= RuboCop::Config.new(merged_config, "")
+      @linter_config ||= RuboCop::Config.new(merged_config, '')
     end
 
     def merged_config
@@ -54,7 +54,7 @@ module Linter
     end
 
     def custom_config
-      RuboCop::Config.new(config.content, "").tap do |custom_config|
+      RuboCop::Config.new(config.content, '').tap do |custom_config|
         custom_config.add_missing_namespaces
         custom_config.make_excludes_absolute
       end
@@ -65,7 +65,7 @@ module Linter
     # This is deprecated in favor of RuboCop's DisplayCopNames option.
     # Let's track how often we see this and remove it if we see fit.
     def rubocop_options
-      if linter_config.delete("ShowCopNames")
+      if linter_config.delete('ShowCopNames')
         Analytics.new(repository_owner_name).track_show_cop_names
         { debug: true }
       end

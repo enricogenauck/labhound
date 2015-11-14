@@ -59,7 +59,7 @@ class PaymentGatewayCustomer
   def create_subscription(options)
     PaymentGatewaySubscription.new(
       customer.subscriptions.create(options),
-      new_subscription: true,
+      new_subscription: true
     )
   end
 
@@ -70,7 +70,7 @@ class PaymentGatewayCustomer
 
   class NoRecord
     def email
-      ""
+      ''
     end
 
     def cards
@@ -98,7 +98,7 @@ class PaymentGatewayCustomer
 
   class BlankCard
     def last4
-      ""
+      ''
     end
   end
 

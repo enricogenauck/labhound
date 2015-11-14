@@ -14,7 +14,7 @@ module Config
 
     private
 
-    DEFAULT_CONTENT = "{}"
+    DEFAULT_CONTENT = '{}'
 
     attr_implement :parse, [:file_content]
 
@@ -53,7 +53,7 @@ module Config
     end
 
     def url?
-      URI::regexp(%w(http https)).match(file_path)
+      URI.regexp(%w(http https)).match(file_path)
     end
 
     def raise_parse_error(message)
@@ -61,7 +61,7 @@ module Config
     end
 
     def file_path
-      linter_config && linter_config["config_file"]
+      linter_config && linter_config['config_file']
     end
 
     def linter_config

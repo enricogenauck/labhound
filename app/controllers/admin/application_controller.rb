@@ -22,6 +22,6 @@ class Admin::ApplicationController < Administrate::ApplicationController
   end
 
   def admin_github_handles
-    ENV.fetch("ADMIN_GITHUB_USERNAMES", "").split(",")
+    ENV.fetch('ADMIN_GITHUB_USERNAMES', '').split(',')
   end
 end

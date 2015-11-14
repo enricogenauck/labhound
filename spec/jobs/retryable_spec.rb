@@ -1,7 +1,7 @@
-require "rails_helper"
+require 'rails_helper'
 
 describe Retryable do
-  context "a successful job" do
+  context 'a successful job' do
     class RetryableTestJob < ActiveJob::Base
       include Retryable
 
@@ -9,7 +9,7 @@ describe Retryable do
       end
     end
 
-    it "does nothing" do
+    it 'does nothing' do
       allow(RetryableTestJob.queue_adapter).to receive(:enqueue)
 
       RetryableTestJob.perform_now
@@ -18,7 +18,7 @@ describe Retryable do
     end
   end
 
-  context "a failing job" do
+  context 'a failing job' do
     class ParentJob < ActiveJob::Base
       include Retryable
 
@@ -29,7 +29,7 @@ describe Retryable do
         self.counter += 1
 
         if counter < 3
-          raise "max attempts"
+          raise 'max attempts'
         end
       end
     end
@@ -48,7 +48,7 @@ describe Retryable do
       RetryableFailingJob.exhausted = nil
     end
 
-    it "retries until it exhausts the attempts" do
+    it 'retries until it exhausts the attempts' do
       allow(Retryable).to receive(:retry_delay).and_return(nil)
       allow(Retryable).to receive(:retry_attempts).and_return(2)
 
@@ -57,7 +57,7 @@ describe Retryable do
       expect(RetryableFailingJob.counter).to eq(2)
     end
 
-    it "retries until it passes" do
+    it 'retries until it passes' do
       allow(Retryable).to receive(:retry_delay).and_return(nil)
       allow(Retryable).to receive(:retry_attempts).and_return(3)
 
@@ -66,7 +66,7 @@ describe Retryable do
       expect(RetryableFailingJob.counter).to eq(3)
     end
 
-    it "retries the job with the configured wait" do
+    it 'retries the job with the configured wait' do
       allow(Retryable).to receive(:retry_attempts).and_return(2)
       allow(Retryable).to receive(:retry_delay).and_return(10)
       job = RetryableFailingJob.new
@@ -77,23 +77,23 @@ describe Retryable do
       expect(job).to have_received(:retry_job).with(wait: 10)
     end
 
-    context "when `after_retry_exhausted` exists" do
-      it "calls `after_retry_exhausted` after retrying" do
+    context 'when `after_retry_exhausted` exists' do
+      it 'calls `after_retry_exhausted` after retrying' do
         job = ExhaustedJob.new
         allow(Retryable).to receive(:retry_attempts).and_return(1)
         allow(job).to receive(:after_retry_exhausted).and_return(true)
 
-        expect { job.perform_now }.to raise_error "max attempts"
+        expect { job.perform_now }.to raise_error 'max attempts'
         expect(job.exhausted).to be true
       end
     end
 
-    context "when `after_retry_exhausted` does not exists" do
-      it "does not call it" do
+    context 'when `after_retry_exhausted` does not exists' do
+      it 'does not call it' do
         allow(Retryable).to receive(:retry_attempts).and_return(1)
         job = RetryableFailingJob.new
 
-        expect { job.perform_now }.to raise_error "max attempts"
+        expect { job.perform_now }.to raise_error 'max attempts'
         expect(RetryableFailingJob.exhausted).to be nil
       end
     end

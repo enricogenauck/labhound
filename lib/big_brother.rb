@@ -1,4 +1,4 @@
-require "faraday"
+require 'faraday'
 
 class BigBrother < Faraday::Response::Middleware
   def on_complete(env)
@@ -9,13 +9,13 @@ class BigBrother < Faraday::Response::Middleware
 
   def tag(env)
     if hound?(env)
-      "[BIG_BROTHER] [HOUND]"
+      '[BIG_BROTHER] [HOUND]'
     else
-      "[BIG_BROTHER] [USER]"
+      '[BIG_BROTHER] [USER]'
     end
   end
 
   def hound?(env)
-    env.request_headers["Authorization"].include?(Hound::GITHUB_TOKEN)
+    env.request_headers['Authorization'].include?(Hound::GITHUB_TOKEN)
   end
 end

@@ -1,14 +1,14 @@
-require "spec_helper"
-require "app/models/config/base"
-require "app/models/config/parser_error"
-require "app/models/config/coffee_script"
+require 'spec_helper'
+require 'app/models/config/base'
+require 'app/models/config/parser_error'
+require 'app/models/config/coffee_script'
 
 describe Config::CoffeeScript do
-  describe "#content" do
-    context "with a modern coffeescript config" do
-      it "returns the content from GitHub as a hash" do
+  describe '#content' do
+    context 'with a modern coffeescript config' do
+      it 'returns the content from GitHub as a hash' do
         commit = stubbed_commit(
-          "config/coffeescript.json" => <<-EOS.strip_heredoc
+          'config/coffeescript.json' => <<-EOS.strip_heredoc
             { "arrow_spacing": { "level": "error" } }
           EOS
         )
@@ -17,15 +17,15 @@ describe Config::CoffeeScript do
         result = config.content
 
         expect(result).to eq(
-          "arrow_spacing" => { "level" => "error" },
+          'arrow_spacing' => { 'level' => 'error' }
         )
       end
     end
 
-    context "with a legacy coffeescript config" do
-      it "returns the content from GitHub as a hash" do
+    context 'with a legacy coffeescript config' do
+      it 'returns the content from GitHub as a hash' do
         commit = stubbed_commit(
-          "config/coffeescript.json" => <<-EOS.strip_heredoc
+          'config/coffeescript.json' => <<-EOS.strip_heredoc
             { "arrow_spacing": { "level": "error" } }
           EOS
         )
@@ -34,15 +34,15 @@ describe Config::CoffeeScript do
         result = config.content
 
         expect(result).to eq(
-          "arrow_spacing" => { "level" => "error" },
+          'arrow_spacing' => { 'level' => 'error' }
         )
       end
     end
 
-    context "when the config file is invalid" do
-      it "raises an exception" do
+    context 'when the config file is invalid' do
+      it 'raises an exception' do
         commit = stubbed_commit(
-          "config/coffeescript.json" => <<-EOS.strip_heredoc
+          'config/coffeescript.json' => <<-EOS.strip_heredoc
             invalid_json
           EOS
         )
@@ -50,7 +50,7 @@ describe Config::CoffeeScript do
 
         expect { config.content }.to raise_error(
           Config::ParserError,
-          /unexpected token at 'invalid_json\n'/,
+          /unexpected token at 'invalid_json\n'/
         )
       end
     end
@@ -58,15 +58,15 @@ describe Config::CoffeeScript do
 
   def build_config(commit)
     hound_config = double(
-      "HoundConfig",
+      'HoundConfig',
       commit: commit,
       content: {
-        "coffeescript" => {
-          "enabled" => true,
-          "config_file" => "config/coffeescript.json",
-        },
-      },
+        'coffeescript' => {
+          'enabled' => true,
+          'config_file' => 'config/coffeescript.json'
+        }
+      }
     )
-    Config::CoffeeScript.new(hound_config, "coffeescript")
+    Config::CoffeeScript.new(hound_config, 'coffeescript')
   end
 end

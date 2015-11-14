@@ -13,7 +13,7 @@ module Config
     end
 
     def alternate_linter_name
-      linter_name.sub("_", "")
+      linter_name.sub('_', '')
     end
   end
 end

@@ -8,10 +8,10 @@ class ReposController < ApplicationController
           current_user.repos.clear
         end
 
-        repos = current_user.
-          repos.
-          order(active: :desc, full_github_name: :asc).
-          includes(:subscription)
+        repos = current_user
+          .repos
+          .order(active: :desc, full_github_name: :asc)
+          .includes(:subscription)
 
         render json: repos
       end

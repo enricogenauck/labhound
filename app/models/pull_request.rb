@@ -1,7 +1,7 @@
 class PullRequest
   pattr_initialize :payload, :token
 
-  FILE_REMOVED_STATUS = "removed"
+  FILE_REMOVED_STATUS = 'removed'
 
   def comments
     @comments ||= user_github.pull_request_comments(full_repo_name, number)
@@ -14,7 +14,7 @@ class PullRequest
   def comment_on_violation(violation)
     hound_github.add_pull_request_comment(
       pull_request_number: number,
-      comment: violation.messages.join("<br>"),
+      comment: violation.messages.join('<br>'),
       commit: head_commit,
       filename: violation.filename,
       patch_position: violation.patch_position
@@ -26,11 +26,11 @@ class PullRequest
   end
 
   def opened?
-    payload.action == "opened"
+    payload.action == 'opened'
   end
 
   def synchronize?
-    payload.action == "synchronize"
+    payload.action == 'synchronize'
   end
 
   def head_commit
@@ -44,7 +44,7 @@ class PullRequest
       CommitFile.new(
         filename: github_file.filename,
         patch: github_file.patch,
-        commit: head_commit,
+        commit: head_commit
       )
     end
   end

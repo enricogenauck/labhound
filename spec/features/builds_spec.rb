@@ -1,4 +1,4 @@
-require "rails_helper"
+require 'rails_helper'
 
 feature 'Builds' do
   let(:payload) do

@@ -1,6 +1,6 @@
 class DefaultConfigFile
-  CONFIG_DIR = "config/style_guides"
-  THOUGHTBOT_CONFIG_DIR = "config/style_guides/thoughtbot"
+  CONFIG_DIR = 'config/style_guides'
+  THOUGHTBOT_CONFIG_DIR = 'config/style_guides/thoughtbot'
 
   pattr_initialize :file_name, :repository_owner_name
 
@@ -19,6 +19,6 @@ class DefaultConfigFile
   end
 
   def thoughtbot_repository?
-    repository_owner_name == "thoughtbot"
+    repository_owner_name == 'thoughtbot'
   end
 end

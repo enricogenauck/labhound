@@ -1,41 +1,41 @@
-require "rails_helper"
+require 'rails_helper'
 
 describe Linter::Collection do
-  describe ".for" do
-    context "when the given filename maps to a linter" do
-      it "instantiates the collection with the matching linters" do
-        hound_config = double("HoundConfig")
-        build = double("Build")
+  describe '.for' do
+    context 'when the given filename maps to a linter' do
+      it 'instantiates the collection with the matching linters' do
+        hound_config = double('HoundConfig')
+        build = double('Build')
         pull_request = double(
-          "PullRequest",
-          head_commit: "HeadCommit",
-          repository_owner_name: "thoughtbot",
+          'PullRequest',
+          head_commit: 'HeadCommit',
+          repository_owner_name: 'thoughtbot'
         )
         collection = Linter::Collection.for(
-          filename: "bank.rb",
+          filename: 'bank.rb',
           hound_config: hound_config,
           build: build,
-          repository_owner_name: pull_request.repository_owner_name,
+          repository_owner_name: pull_request.repository_owner_name
         )
 
         expect(collection.linters.sample).to be_a Linter::Ruby
       end
     end
 
-    context "when the given filename does not map to a linter" do
-      it "instantiates the collection with the unsupported linter" do
-        hound_config = double("HoundConfig")
-        build = double("Build")
+    context 'when the given filename does not map to a linter' do
+      it 'instantiates the collection with the unsupported linter' do
+        hound_config = double('HoundConfig')
+        build = double('Build')
         pull_request = double(
-          "PullRequest",
-          head_commit: "HeadCommit",
-          repository_owner_name: "thoughtbot",
+          'PullRequest',
+          head_commit: 'HeadCommit',
+          repository_owner_name: 'thoughtbot'
         )
         collection = Linter::Collection.for(
-          filename: "bank.f",
+          filename: 'bank.f',
           hound_config: hound_config,
           build: build,
-          repository_owner_name: pull_request.repository_owner_name,
+          repository_owner_name: pull_request.repository_owner_name
         )
 
         expect(collection.linters.sample).to be_a Linter::Unsupported
@@ -43,29 +43,29 @@ describe Linter::Collection do
     end
   end
 
-  describe "#file_review" do
-    context "when the linters are enabled and has given file included" do
-      it "calls `file_review` on the linters" do
+  describe '#file_review' do
+    context 'when the linters are enabled and has given file included' do
+      it 'calls `file_review` on the linters' do
         element_a = double(
-          "ElementA",
+          'ElementA',
           enabled?: true,
           file_included?: true,
-          file_review: true,
+          file_review: true
         )
         element_b = double(
-          "ElementB",
+          'ElementB',
           enabled?: false,
           file_included?: true,
-          file_review: true,
+          file_review: true
         )
         element_c = double(
-          "ElementC",
+          'ElementC',
           enabled?: true,
           file_included?: true,
-          file_review: true,
+          file_review: true
         )
         elements = [element_a, element_b, element_c]
-        commit_file = double("CommitFile")
+        commit_file = double('CommitFile')
         collection = Linter::Collection.new(elements)
 
         collection.file_review(commit_file)
@@ -76,28 +76,28 @@ describe Linter::Collection do
       end
     end
 
-    context "when the linters are disabled and has the file included" do
-      it "does nothing" do
+    context 'when the linters are disabled and has the file included' do
+      it 'does nothing' do
         element_a = double(
-          "ElementA",
+          'ElementA',
           enabled?: false,
           file_included?: false,
-          file_review: true,
+          file_review: true
         )
         element_b = double(
-          "ElementB",
+          'ElementB',
           enabled?: true,
           file_included?: false,
-          file_review: true,
+          file_review: true
         )
         element_c = double(
-          "ElementC",
+          'ElementC',
           enabled?: false,
           file_included?: true,
-          file_review: true,
+          file_review: true
         )
         elements = [element_a, element_b, element_c]
-        commit_file = double("CommitFile")
+        commit_file = double('CommitFile')
         collection = Linter::Collection.new(elements)
 
         collection.file_review(commit_file)

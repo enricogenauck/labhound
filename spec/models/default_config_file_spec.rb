@@ -1,27 +1,27 @@
-require "rails_helper"
-require "spec_helper"
+require 'rails_helper'
+require 'spec_helper'
 
 describe DefaultConfigFile do
-  describe "#path" do
-    context "thoughtbot repository" do
-      it "returns the configuration file used by thoughtbot" do
+  describe '#path' do
+    context 'thoughtbot repository' do
+      it 'returns the configuration file used by thoughtbot' do
         config_path = File.join(
           DefaultConfigFile::CONFIG_DIR,
-          "javascript.json"
+          'javascript.json'
         )
-        config = DefaultConfigFile.new("javascript.json", "not_thoughtbot")
+        config = DefaultConfigFile.new('javascript.json', 'not_thoughtbot')
 
         expect(config.path).to eq config_path
       end
     end
 
-    context "non-thoughtbot repository" do
-      it "returns the default hound configuration" do
+    context 'non-thoughtbot repository' do
+      it 'returns the default hound configuration' do
         config_path = File.join(
           DefaultConfigFile::THOUGHTBOT_CONFIG_DIR,
-          "javascript.json"
+          'javascript.json'
         )
-        config = DefaultConfigFile.new("javascript.json", "thoughtbot")
+        config = DefaultConfigFile.new('javascript.json', 'thoughtbot')
 
         expect(config.path).to eq config_path
       end

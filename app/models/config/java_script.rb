@@ -18,9 +18,9 @@ module Config
     end
 
     def load_javascript_ignore
-      ignore_file = hound_config.content.
-        fetch("javascript", {}).
-        fetch("ignore_file", ".jshintignore")
+      ignore_file = hound_config.content
+        .fetch('javascript', {})
+        .fetch('ignore_file', '.jshintignore')
 
       commit.file_content(ignore_file).to_s.split("\n")
     end
@@ -30,7 +30,7 @@ module Config
     end
 
     def alternate_linter_name
-      linter_name.sub("_", "")
+      linter_name.sub('_', '')
     end
   end
 end

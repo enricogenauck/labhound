@@ -1,10 +1,10 @@
-require "administrate/base_dashboard"
+require 'administrate/base_dashboard'
 
 class BulkCustomerDashboard < Administrate::BaseDashboard
   READ_ONLY_ATTRIBUTES = [
     :id,
     :created_at,
-    :updated_at,
+    :updated_at
   ]
 
   ATTRIBUTE_TYPES = {
@@ -16,14 +16,14 @@ class BulkCustomerDashboard < Administrate::BaseDashboard
     interval: Field::String,
     repo_limit: Field::String,
     current_repos: Field::String,
-    subscription_token: Field::String,
+    subscription_token: Field::String
   }
 
   TABLE_ATTRIBUTES = [
     :org,
     :description,
     :repo_limit,
-    :current_repos,
+    :current_repos
   ]
 
   SHOW_PAGE_ATTRIBUTES = ATTRIBUTE_TYPES.keys

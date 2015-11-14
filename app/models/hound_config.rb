@@ -1,5 +1,5 @@
 class HoundConfig
-  CONFIG_FILE = ".hound.yml"
+  CONFIG_FILE = '.hound.yml'
   BETA_LANGUAGES = %w(
     eslint
     jscs
@@ -29,7 +29,7 @@ class HoundConfig
   end
 
   def fail_on_violations?
-    !!(content["fail_on_violations"])
+    !!(content['fail_on_violations'])
   end
 
   private
@@ -46,7 +46,7 @@ class HoundConfig
   end
 
   def enabled?(config)
-    config["enabled"] || config["Enabled"]
+    config['enabled'] || config['Enabled']
   end
 
   def options_for(name)
@@ -55,7 +55,7 @@ class HoundConfig
   end
 
   def default_options_for(name)
-    { "enabled" => !beta?(name) }
+    { 'enabled' => !beta?(name) }
   end
 
   def beta?(name)
@@ -63,6 +63,6 @@ class HoundConfig
   end
 
   def normalize_key(key)
-    key.downcase.sub("_", "")
+    key.downcase.sub('_', '')
   end
 end

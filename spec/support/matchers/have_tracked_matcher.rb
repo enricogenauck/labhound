@@ -2,14 +2,14 @@ RSpec::Matchers.define :have_tracked do |event_name|
   match do |backend|
     @event_name = event_name
     @backend = backend
-    backend.
-      tracked_events_for(@user).
-      named(@event_name).
-      has_keys?(@keys)
+    backend
+      .tracked_events_for(@user)
+      .named(@event_name)
+      .has_keys?(@keys)
   end
 
   description do
-    "tracked event"
+    'tracked event'
   end
 
   failure_message do |_|

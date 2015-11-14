@@ -1,16 +1,16 @@
-require "rails_helper"
+require 'rails_helper'
 
 describe FileReview do
-  describe "associations" do
+  describe 'associations' do
     it { should belong_to :build }
   end
 
-  describe "#build_violation" do
-    context "when line has been changed" do
-      it "builds a violations" do
+  describe '#build_violation' do
+    context 'when line has been changed' do
+      it 'builds a violations' do
         line = build_line
         file_review = FileReview.new
-        violation_message = "violation found!"
+        violation_message = 'violation found!'
 
         file_review.build_violation(line, violation_message)
         violation = file_review.violations.first
@@ -22,21 +22,21 @@ describe FileReview do
       end
     end
 
-    context "when line has not been changed" do
-      it "does not build a violations" do
+    context 'when line has not been changed' do
+      it 'does not build a violations' do
         line = build_line(changed: false)
         file_review = FileReview.new
 
-        file_review.build_violation(line, "hello")
+        file_review.build_violation(line, 'hello')
 
         expect(file_review.violations).to be_empty
       end
     end
 
-    context "with multiple violations on the same line" do
-      it "adds messages to the same violation" do
-        first_violation_message = "first message"
-        other_violation_message = "other message"
+    context 'with multiple violations on the same line' do
+      it 'adds messages to the same violation' do
+        first_violation_message = 'first message'
+        other_violation_message = 'other message'
         line = build_line
         file_review = FileReview.new
 
@@ -53,8 +53,8 @@ describe FileReview do
     end
   end
 
-  describe "#complete" do
-    it "marks it as completed" do
+  describe '#complete' do
+    it 'marks it as completed' do
       file_review = FileReview.new
 
       file_review.complete
@@ -63,28 +63,28 @@ describe FileReview do
     end
   end
 
-  describe "#completed?" do
-    it "returns true when completed_at is set" do
+  describe '#completed?' do
+    it 'returns true when completed_at is set' do
       file_review = FileReview.new(completed_at: Time.zone.now)
 
       expect(file_review).to be_completed
     end
 
-    it "returns false when completed_at is nil" do
+    it 'returns false when completed_at is nil' do
       file_review = FileReview.new
 
       expect(file_review).not_to be_completed
     end
   end
 
-  describe "#running?" do
-    it "returns true when complete_at is set" do
+  describe '#running?' do
+    it 'returns true when complete_at is set' do
       file_review = FileReview.new(completed_at: Time.zone.now)
 
       expect(file_review).not_to be_running
     end
 
-    it "returns false when completed_at is nil" do
+    it 'returns false when completed_at is nil' do
       file_review = FileReview.new(completed_at: nil)
 
       expect(file_review).to be_running
@@ -93,10 +93,10 @@ describe FileReview do
 
   def build_line(changed: true, number: 1, patch_position: 121)
     double(
-      "Line",
+      'Line',
       changed?: changed,
       number: number,
-      patch_position: patch_position,
+      patch_position: patch_position
     )
   end
 end

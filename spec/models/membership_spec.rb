@@ -1,4 +1,4 @@
-require "rails_helper"
+require 'rails_helper'
 
 describe Membership, 'associations' do
   it { should belong_to(:repo) }

@@ -1,9 +1,9 @@
-require "spec_helper"
-require "app/models/config/base"
-require "app/models/config/mdast"
+require 'spec_helper'
+require 'app/models/config/base'
+require 'app/models/config/mdast'
 
 describe Config::Mdast do
-  it_behaves_like "a service based linter" do
+  it_behaves_like 'a service based linter' do
     let(:raw_config) do
       <<-EOS.strip_heredoc
         {
@@ -14,10 +14,10 @@ describe Config::Mdast do
 
     let(:hound_config_content) do
       {
-        "mdast" => {
-          "enabled" => true,
-          "config_file" => "config/.mdastrc",
-        },
+        'mdast' => {
+          'enabled' => true,
+          'config_file' => 'config/.mdastrc'
+        }
       }
     end
   end

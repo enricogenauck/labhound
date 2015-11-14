@@ -1,9 +1,9 @@
-require "spec_helper"
+require 'spec_helper'
 require 'app/models/patch'
 require 'app/models/line'
 
 describe Patch do
-  describe "#changed_lines" do
+  describe '#changed_lines' do
     it 'returns lines that were modified' do
       patch_text = File.read('spec/support/fixtures/patch.diff')
       patch = Patch.new(patch_text)
@@ -14,7 +14,7 @@ describe Patch do
     end
 
     context 'when body is nil' do
-      it "returns no lines" do
+      it 'returns no lines' do
         patch = Patch.new(nil)
 
         expect(patch.changed_lines.size).to eq(0)

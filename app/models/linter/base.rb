@@ -14,7 +14,7 @@ module Linter
       attributes = build_review_job_attributes(commit_file)
       file_review = FileReview.create!(
         build: build,
-        filename: commit_file.filename,
+        filename: commit_file.filename
       )
 
       enqueue_job(attributes)
@@ -45,7 +45,7 @@ module Linter
         content: commit_file.content,
         filename: commit_file.filename,
         patch: commit_file.patch,
-        pull_request_number: build.pull_request_number,
+        pull_request_number: build.pull_request_number
       }
     end
 

@@ -53,7 +53,7 @@ class BuildReport
     CommitStatus.new(
       repo_name: build.repo_name,
       sha: build.commit_sha,
-      token: token,
+      token: token
     )
   end
 end

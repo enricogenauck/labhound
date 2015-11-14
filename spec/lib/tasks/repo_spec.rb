@@ -1,21 +1,21 @@
-require "rails_helper"
-require "rake"
+require 'rails_helper'
+require 'rake'
 
-describe "namespace repo" do
+describe 'namespace repo' do
   before :all do
-    Rake.application.rake_require "tasks/repo"
+    Rake.application.rake_require 'tasks/repo'
     Rake::Task.define_task(:environment)
   end
 
-  describe "task remove_without_memberships" do
-    it "removes repos without memberships" do
+  describe 'task remove_without_memberships' do
+    it 'removes repos without memberships' do
       repo = create(:repo)
       create(:membership, repo: repo)
       create(:repo).tap do |r|
         r.memberships.destroy_all
       end
 
-      task = Rake::Task["repo:remove_without_memberships"]
+      task = Rake::Task['repo:remove_without_memberships']
       task.reenable
       task.invoke
 
@@ -23,14 +23,14 @@ describe "namespace repo" do
     end
   end
 
-  describe "task remove_duplicate_github_ids" do
+  describe 'task remove_duplicate_github_ids' do
     def run
-      task = Rake::Task["repo:remove_duplicate_github_ids"]
+      task = Rake::Task['repo:remove_duplicate_github_ids']
       task.reenable
       task.invoke
     end
 
-    it "does not effect unduplicated rows" do
+    it 'does not effect unduplicated rows' do
       repo = create(:repo)
 
       run
@@ -38,7 +38,7 @@ describe "namespace repo" do
       expect(Repo.all).to eq([repo])
     end
 
-    it "removes duplicate rows" do
+    it 'removes duplicate rows' do
       repo1 = create(:repo)
       repo2 = create(:repo)
       repo2.update_attribute :github_id, repo1.github_id
@@ -48,7 +48,7 @@ describe "namespace repo" do
       expect(Repo.count).to eq(1)
     end
 
-    it "prefers active repos to inactive repos" do
+    it 'prefers active repos to inactive repos' do
       repo1 = create(:repo)
       repo2 = create(:repo, active: true)
       repo3 = create(:repo)

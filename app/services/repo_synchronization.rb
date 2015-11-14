@@ -28,7 +28,7 @@ class RepoSynchronization
       github_id: attributes[:id],
       full_github_name: attributes[:full_name],
       in_organization: attributes[:owner][:type] == GithubApi::ORGANIZATION_TYPE,
-      owner: owner,
+      owner: owner
     }
   end
 

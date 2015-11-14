@@ -1,13 +1,13 @@
-require "rails_helper"
+require 'rails_helper'
 
 describe RepoSynchronization do
-  describe "#start" do
-    it "saves privacy flag" do
+  describe '#start' do
+    it 'saves privacy flag' do
       stub_github_api_repos(
         repo_id: 456,
         owner_id: 1,
-        owner_name: "thoughtbot",
-        repo_name: "user/newrepo"
+        owner_name: 'thoughtbot',
+        repo_name: 'user/newrepo'
       )
       user = create(:user)
       synchronization = RepoSynchronization.new(user)
@@ -17,13 +17,13 @@ describe RepoSynchronization do
       expect(user.repos.first).to be_private
     end
 
-    it "saves organization flag" do
+    it 'saves organization flag' do
       stub_github_api_repos(
         repo_id: 456,
         owner_id: 1,
-        owner_name: "thoughtbot",
+        owner_name: 'thoughtbot',
         private_repo: false,
-        repo_name: "user/newrepo"
+        repo_name: 'user/newrepo'
       )
       user = create(:user)
       synchronization = RepoSynchronization.new(user)
@@ -33,13 +33,13 @@ describe RepoSynchronization do
       expect(user.repos.first).to be_in_organization
     end
 
-    it "replaces existing repos" do
+    it 'replaces existing repos' do
       stub_github_api_repos(
         repo_id: 456,
         owner_id: 1,
-        owner_name: "thoughtbot",
+        owner_name: 'thoughtbot',
         private_repo: false,
-        repo_name: "user/newrepo"
+        repo_name: 'user/newrepo'
       )
       membership = create(:membership)
       user = membership.user
@@ -48,17 +48,17 @@ describe RepoSynchronization do
       synchronization.start
 
       expect(user.repos.size).to eq(1)
-      expect(user.repos.first.full_github_name).to eq "user/newrepo"
+      expect(user.repos.first.full_github_name).to eq 'user/newrepo'
       expect(user.repos.first.github_id).to eq 456
     end
 
-    it "renames an existing repo if updated on github" do
+    it 'renames an existing repo if updated on github' do
       membership = create(:membership)
-      repo_name = "user/newrepo"
+      repo_name = 'user/newrepo'
       stub_github_api_repos(
         repo_id: membership.repo.github_id,
         owner_id: 1,
-        owner_name: "thoughtbot",
+        owner_name: 'thoughtbot',
         repo_name: repo_name
       )
       synchronization = RepoSynchronization.new(membership.user)
@@ -66,18 +66,18 @@ describe RepoSynchronization do
       synchronization.start
 
       expect(membership.user.repos.first.full_github_name).to eq repo_name
-      expect(membership.user.repos.first.github_id).
-        to eq membership.repo.github_id
+      expect(membership.user.repos.first.github_id)
+        .to eq membership.repo.github_id
     end
 
-    describe "when a repo membership already exists" do
-      it "creates another membership" do
+    describe 'when a repo membership already exists' do
+      it 'creates another membership' do
         first_membership = create(:membership)
         repo = first_membership.repo
         stub_github_api_repos(
           repo_id: repo.github_id,
           owner_id: 1,
-          owner_name: "thoughtbot"
+          owner_name: 'thoughtbot'
         )
         second_user = create(:user)
         synchronization = RepoSynchronization.new(second_user)
@@ -88,12 +88,12 @@ describe RepoSynchronization do
       end
     end
 
-    describe "repo owners" do
+    describe 'repo owners' do
       context "when the owner doesn't exist" do
-        it "creates and associates an owner to the repo" do
+        it 'creates and associates an owner to the repo' do
           user = create(:user)
           owner_github_id = 1234
-          owner_name = "thoughtbot"
+          owner_name = 'thoughtbot'
           repo_github_id = 321
           stub_github_api_repos(
             repo_id: repo_github_id,
@@ -110,8 +110,8 @@ describe RepoSynchronization do
         end
       end
 
-      context "when the owner exists" do
-        it "updates and associates an owner to the repo" do
+      context 'when the owner exists' do
+        it 'updates and associates an owner to the repo' do
           owner = create(:owner)
           user = create(:user)
           repo_github_id = 321
@@ -135,7 +135,7 @@ describe RepoSynchronization do
       owner_id:,
       owner_name:,
       private_repo: true,
-      repo_name: "thoughtbot/newrepo"
+      repo_name: 'thoughtbot/newrepo'
     )
       attributes = {
         full_name: repo_name,
@@ -144,11 +144,11 @@ describe RepoSynchronization do
         owner: {
           id: owner_id,
           login: owner_name,
-          type: "Organization",
+          type: 'Organization'
         }
       }
       resource = double(:resource, to_hash: attributes)
-      api = double("GithubApi", repos: [resource])
+      api = double('GithubApi', repos: [resource])
       allow(GithubApi).to receive(:new).and_return(api)
     end
   end

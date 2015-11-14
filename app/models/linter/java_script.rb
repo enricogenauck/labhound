@@ -1,16 +1,16 @@
 module Linter
   class JavaScript < Base
-    DEFAULT_CONFIG_FILENAME = "javascript.json"
+    DEFAULT_CONFIG_FILENAME = 'javascript.json'
     FILE_REGEXP = /.+\.js\z/
 
     def file_review(commit_file)
       FileReview.create!(filename: commit_file.filename) do |file_review|
         Jshintrb.lint(
           commit_file.content,
-          linter_config,
+          linter_config
         ).compact.each do |violation|
-          line = commit_file.line_at(violation["line"])
-          file_review.build_violation(line, violation["reason"])
+          line = commit_file.line_at(violation['line'])
+          file_review.build_violation(line, violation['reason'])
         end
 
         file_review.build = build
@@ -28,8 +28,8 @@ module Linter
 
     def linter_config
       custom_config = config.content
-      if custom_config["predef"].present?
-        custom_config["predef"] |= default_config["predef"]
+      if custom_config['predef'].present?
+        custom_config['predef'] |= default_config['predef']
       end
       default_config.merge(custom_config)
     end

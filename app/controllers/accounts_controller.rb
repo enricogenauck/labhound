@@ -5,7 +5,7 @@ class AccountsController < ApplicationController
     @account_page = AccountPage.new(
       repos: find_subscribed_repos,
       billable_email: current_user.billable_email,
-      payment_gateway_subscriptions: current_user.payment_gateway_subscriptions,
+      payment_gateway_subscriptions: current_user.payment_gateway_subscriptions
     )
   end
 
@@ -27,7 +27,7 @@ class AccountsController < ApplicationController
 
   def validate_billable_email
     unless EmailValidator.valid?(new_billable_email)
-      error_message = I18n.t("account.billable_email.invalid")
+      error_message = I18n.t('account.billable_email.invalid')
       render json: { errors: [error_message] }, status: :unprocessable_entity
     end
   end

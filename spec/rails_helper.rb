@@ -1,7 +1,7 @@
-ENV["RAILS_ENV"] ||= "test"
+ENV['RAILS_ENV'] ||= 'test'
 
-require "config/environment"
-require "rspec/rails"
+require 'config/environment'
+require 'rspec/rails'
 
 ActiveRecord::Migration.maintain_test_schema!
 

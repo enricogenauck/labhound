@@ -1,4 +1,4 @@
-require "rails_helper"
+require 'rails_helper'
 
 describe BuildsController, '#create' do
   it 'ignores confirmation pings' do
@@ -56,9 +56,9 @@ describe BuildsController, '#create' do
     end
   end
 
-  context "when payload is not for pull request" do
-    it "does not schedule a job" do
-      payload_data = File.read("spec/support/fixtures/push_event.json")
+  context 'when payload is not for pull request' do
+    it 'does not schedule a job' do
+      payload_data = File.read('spec/support/fixtures/push_event.json')
       allow(LargeBuildJob).to receive(:perform_later)
       allow(SmallBuildJob).to receive(:perform_later)
 

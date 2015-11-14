@@ -6,9 +6,9 @@ class Plan
   }
 
   TYPES = {
-    bulk: "bulk",
-    public: "public",
-    private: "private"
+    bulk: 'bulk',
+    public: 'public',
+    private: 'private'
   }
 
   def initialize(repo)

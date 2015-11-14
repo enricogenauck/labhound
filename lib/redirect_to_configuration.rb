@@ -6,10 +6,10 @@ class RedirectToConfiguration
   end
 
   def call(env)
-    if new_location = old_to_new(env["PATH_INFO"])
+    if new_location = old_to_new(env['PATH_INFO'])
       [
         301,
-        { "Location" => new_location, "Content-Type" => "text/html" },
+        { 'Location' => new_location, 'Content-Type' => 'text/html' },
         ["Moved permanently to #{new_location}"]
       ]
     else
@@ -21,7 +21,7 @@ class RedirectToConfiguration
 
   def old_to_new(old)
     if CONFIG_REGEX.match(old)
-      old.sub("configuration&", "configuration?&")
+      old.sub('configuration&', 'configuration?&')
     end
   end
 end

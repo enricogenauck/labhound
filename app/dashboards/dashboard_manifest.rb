@@ -1,5 +1,5 @@
 class DashboardManifest
   DASHBOARDS = [
-    :bulk_customers,
+    :bulk_customers
   ]
 end

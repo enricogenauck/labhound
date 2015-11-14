@@ -51,7 +51,7 @@ class BuildRunner
       pull_request_number: payload.pull_request_number,
       commit_sha: payload.head_sha,
       payload: payload.build_data.to_json,
-      user: current_user_with_token,
+      user: current_user_with_token
     )
   end
 
@@ -110,7 +110,7 @@ class BuildRunner
     @commit_status ||= CommitStatus.new(
       repo_name: payload.full_repo_name,
       sha: payload.head_sha,
-      token: token,
+      token: token
     )
   end
 
@@ -118,7 +118,7 @@ class BuildRunner
     ReportInvalidConfig.run(
       pull_request_number: payload.pull_request_number,
       commit_sha: payload.head_sha,
-      filename: filename,
+      filename: filename
     )
   end
 end

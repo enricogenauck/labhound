@@ -1,14 +1,14 @@
-require "rails_helper"
+require 'rails_helper'
 
 describe Buildable do
   class BuildableTestJob < ActiveJob::Base
     include Buildable
   end
 
-  describe "#perform" do
+  describe '#perform' do
     it 'runs build runner' do
       build_runner = double(:build_runner, run: nil)
-      payload = double("Payload", github_repo_id: 1)
+      payload = double('Payload', github_repo_id: 1)
       allow(Payload).to receive(:new).with(payload_data).and_return(payload)
       allow(BuildRunner).to receive(:new).and_return(build_runner)
 
@@ -19,9 +19,9 @@ describe Buildable do
       expect(build_runner).to have_received(:run)
     end
 
-    it "runs repo updater" do
-      repo_updater = double("RepoUpdater", run: nil)
-      payload = double("Payload", github_repo_id: 1)
+    it 'runs repo updater' do
+      repo_updater = double('RepoUpdater', run: nil)
+      payload = double('Payload', github_repo_id: 1)
       allow(Payload).to receive(:new).with(payload_data).and_return(payload)
       allow(UpdateRepoStatus).to receive(:new).and_return(repo_updater)
 
@@ -33,10 +33,10 @@ describe Buildable do
     end
   end
 
-  describe "#after_retry_exhausted" do
-    it "sets internal server error on github" do
-      build_runner = double("BuildRunner", set_internal_error: nil)
-      payload = double("Payload")
+  describe '#after_retry_exhausted' do
+    it 'sets internal server error on github' do
+      build_runner = double('BuildRunner', set_internal_error: nil)
+      payload = double('Payload')
       allow(Payload).to receive(:new).with(payload_data).and_return(payload)
       allow(BuildRunner).to receive(:new).and_return(build_runner)
 
@@ -48,13 +48,13 @@ describe Buildable do
     end
   end
 
-  def payload_data(github_id: 1234, name: "test")
+  def payload_data(github_id: 1234, name: 'test')
     {
-      "repository" => {
-        "owner" => {
-          "id" => github_id,
-          "login" => name,
-          "type" => "Organization"
+      'repository' => {
+        'owner' => {
+          'id' => github_id,
+          'login' => name,
+          'type' => 'Organization'
         }
       }
     }

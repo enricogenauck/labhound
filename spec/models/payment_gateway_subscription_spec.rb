@@ -1,35 +1,35 @@
-require "rails_helper"
+require 'rails_helper'
 
 describe PaymentGatewaySubscription do
-  context ".subscribe" do
-    context "existing subscription" do
-      it "appends id to repo_ids metadata" do
+  context '.subscribe' do
+    context 'existing subscription' do
+      it 'appends id to repo_ids metadata' do
         stripe_subscription = MockStripeSubscription.new(repo_ids: [1])
         subscription = PaymentGatewaySubscription.new(stripe_subscription)
 
-        expect(stripe_subscription.metadata["repo_ids"]).to eq "1"
+        expect(stripe_subscription.metadata['repo_ids']).to eq '1'
 
         subscription.subscribe(2)
 
-        expect(stripe_subscription.metadata["repo_ids"]).to eq "1,2"
+        expect(stripe_subscription.metadata['repo_ids']).to eq '1,2'
       end
 
-      it "converts legacy format to new format" do
+      it 'converts legacy format to new format' do
         legacy_subscription = MockLegacyStripeSubscription.new(repo_id: 1)
         subscription = PaymentGatewaySubscription.new(legacy_subscription)
 
-        expect(legacy_subscription.metadata["repo_id"]).to eq "1"
+        expect(legacy_subscription.metadata['repo_id']).to eq '1'
 
         subscription.subscribe(2)
 
-        expect(legacy_subscription.metadata["repo_id"]).to be_nil
-        expect(legacy_subscription.metadata["repo_ids"]).to eq "1,2"
+        expect(legacy_subscription.metadata['repo_id']).to be_nil
+        expect(legacy_subscription.metadata['repo_ids']).to eq '1,2'
       end
     end
   end
 
-  context ".unsubscribe" do
-    it "removes repo_id from repo_ids" do
+  context '.unsubscribe' do
+    it 'removes repo_id from repo_ids' do
       stripe_subscription = MockStripeSubscription.new(repo_ids: [1, 2])
       allow(stripe_subscription).to receive(:delete)
       allow(stripe_subscription).to receive(:save)
@@ -37,7 +37,7 @@ describe PaymentGatewaySubscription do
 
       subscription.unsubscribe(2)
 
-      expect(stripe_subscription.metadata["repo_ids"]).to eq "1"
+      expect(stripe_subscription.metadata['repo_ids']).to eq '1'
       expect(stripe_subscription).not_to have_received(:delete)
       expect(stripe_subscription).to have_received(:save)
     end
@@ -60,7 +60,7 @@ describe PaymentGatewaySubscription do
 
     def initialize(repo_ids:)
       @quantity = repo_ids.count
-      @metadata = { "repo_ids" => repo_ids.join(",") }
+      @metadata = { 'repo_ids' => repo_ids.join(',') }
     end
 
     def save; end
@@ -71,7 +71,7 @@ describe PaymentGatewaySubscription do
   class MockLegacyStripeSubscription < MockStripeSubscription
     def initialize(repo_id:)
       @quantity = 1
-      @metadata = { "repo_id" => repo_id.to_s }
+      @metadata = { 'repo_id' => repo_id.to_s }
     end
   end
 end
