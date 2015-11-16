@@ -24,7 +24,11 @@ gem 'neat'
 gem 'octokit'
 gem 'gitlab'
 
-gem 'omniauth-github'
+# fixed version until issue #81 is solved
+# https://github.com/intridea/omniauth-oauth2/issues/81
+gem 'omniauth-oauth2', '1.3.1'
+
+gem 'omniauth-gitlab'
 gem 'paranoia', '~> 2.0'
 gem 'pg'
 gem 'puma'

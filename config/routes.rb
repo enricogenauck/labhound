@@ -15,7 +15,7 @@ Houndapp::Application.routes.draw do
   mount JasmineRails::Engine => '/specs' if defined?(JasmineRails)
   mount Split::Dashboard, at: 'split'
 
-  get '/auth/github/callback', to: 'sessions#create'
+  get '/auth/gitlab/callback', to: 'sessions#create'
   get '/sign_out', to: 'sessions#destroy'
   get '/configuration', to: 'pages#configuration'
   get '/faq', to: 'pages#show', id: 'faq'

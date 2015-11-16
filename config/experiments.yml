@@ -1,5 +1,5 @@
 auth_button:
   alternatives:
-    - "Sign In with GitHub"
+    - "Sign In with Gitlab"
     - "Set Up Hound"
   resettable: false

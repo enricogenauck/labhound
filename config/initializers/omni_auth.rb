@@ -7,9 +7,11 @@ Rails.application.config.middleware.use OmniAuth::Builder do
   end
 
   provider(
-    :github,
-    ENV['GITHUB_CLIENT_ID'],
-    ENV['GITHUB_CLIENT_SECRET'],
-    setup: setup
+    :gitlab,
+    Hound::GITLAB_APPLICATION_KEY,
+    Hound::GITLAB_APPLICATION_SECRET,
+    client_options: {
+      site: Hound::GITLAB_API_URL
+    }
   )
 end
