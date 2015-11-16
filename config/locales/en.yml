@@ -2,7 +2,7 @@ en:
   sync_repos: "Refresh repo list"
   include_private_repos: "Include private repos"
   syncing_repos: "Loading..."
-  authenticate: "Sign In with GitHub"
+  authenticate: "Sign In with Gitlab"
   sign_out: "Sign Out"
   active_repos: "Active repos"
   search_placeholder: "Search by repo"
