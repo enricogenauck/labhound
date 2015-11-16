@@ -21,22 +21,26 @@ class RepoSynchronization
   end
 
   def repo_attributes(attributes)
-    owner = upsert_owner(attributes[:owner])
+    owner = upsert_owner(attributes['owner'])
 
     {
-      private: attributes[:private],
-      github_id: attributes[:id],
-      full_github_name: attributes[:full_name],
-      in_organization: attributes[:owner][:type] == GitlabApi::ORGANIZATION_TYPE,
+      private: !!attributes['public'],
+      github_id: attributes['id'],
+      full_github_name: attributes['path_with_namespace'],
+      in_organization: attributes['owner']['type'] == configured_organization,
       owner: owner
     }
   end
 
   def upsert_owner(owner_attributes)
     Owner.upsert(
-      github_id: owner_attributes[:id],
-      name: owner_attributes[:login],
-      organization: owner_attributes[:type] == GitlabApi::ORGANIZATION_TYPE
+      github_id: owner_attributes['id'],
+      name: owner_attributes['name'],
+      organization: owner_attributes['type'] == GitlabApi::ORGANIZATION_TYPE
     )
+  end
+
+  def configured_organization
+    GitlabApi::ORGANIZATION_TYPE
   end
 end

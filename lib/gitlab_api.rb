@@ -1,23 +1,24 @@
 require 'attr_extras'
 require 'octokit'
 require 'gitlab'
-require 'config/initializers/constants'
 require 'base64'
+require_relative '../config/initializers/constants'
 
 class GitlabApi
   ORGANIZATION_TYPE = 'Organization'
   PREVIEW_MEDIA_TYPE = 'application/vnd.github.moondragon+json'
+  API_VERSION = '/api/v3/'
 
   attr_reader :file_cache, :token, :api_url
 
   def initialize(token)
     @token = token
-    @api_url = Hound::GITLAB_API_URL
+    @api_url = Hound::GITLAB_API_URL + API_VERSION
     @file_cache = {}
   end
 
   def client
-    @client ||= Gitlab.client(endpoint: api_url, private_token: token)
+    @client ||= Gitlab.client(endpoint: api_url, auth_token: token)
   end
 
   # TODO: Check if this is needed in Gitlab
