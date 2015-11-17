@@ -7,7 +7,8 @@ require_relative '../config/initializers/constants'
 class GitlabApi
   ORGANIZATION_TYPE = 'Organization'
   PREVIEW_MEDIA_TYPE = 'application/vnd.github.moondragon+json'
-  API_VERSION = '/api/v3/'
+  API_VERSION = '/api/v3'
+  DEVELOPER_LEVEL = '30'
 
   attr_reader :file_cache, :token, :api_url
 
@@ -116,7 +117,9 @@ class GitlabApi
     )
   end
 
-  def add_collaborator(project_id, user_id, access_level=2)
+  def add_collaborator(project_id, user_name, access_level=DEVELOPER_LEVEL)
+    user_id = find_id(user_name)
+
     client.add_team_member(
       project_id,
       user_id,
@@ -124,7 +127,9 @@ class GitlabApi
     )
   end
 
-  def remove_collaborator(project_id, user_id)
+  def remove_collaborator(project_id, user_name)
+    user_id = find_id(user_name)
+
     client.remove_team_member(
       project_id,
       user_id
@@ -150,5 +155,10 @@ class GitlabApi
     #   )
     # rescue Octokit::NotFound
     #   # noop
+  end
+
+  def find_id(user_name)
+    candidates = client.users(search: user_name)
+    candidates.detect{|c| c.username == user_name}.id
   end
 end

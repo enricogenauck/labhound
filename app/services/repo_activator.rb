@@ -44,7 +44,7 @@ class RepoActivator
   end
 
   def add_hound_to_repo
-    github.add_collaborator(repo.full_github_name, Hound::GITHUB_USERNAME)
+    github.add_collaborator(repo.github_id, Hound::GITHUB_USERNAME)
   end
 
   def github
@@ -52,7 +52,7 @@ class RepoActivator
   end
 
   def create_webhook
-    github.create_hook(repo.full_github_name, builds_url) do |hook|
+    github.create_hook(repo.github_id, builds_url) do |hook|
       repo.update(hook_id: hook.id)
     end
   end

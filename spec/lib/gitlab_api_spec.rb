@@ -286,9 +286,9 @@ describe GitlabApi do
     it 'makes a request to GitHub' do
       username = 'houndci'
       api = described_class.new(token)
-      request = stub_add_collaborator_request(username, full_repo_name, token)
+      request = stub_add_collaborator_request(username, repo_id, token)
 
-      api.add_collaborator(full_repo_name, username)
+      api.add_collaborator(repo_id, username)
 
       expect(request).to have_been_requested
     end
@@ -316,5 +316,9 @@ describe GitlabApi do
 
   def full_repo_name
     'foo/bar'
+  end
+
+  def repo_id
+    '23'
   end
 end

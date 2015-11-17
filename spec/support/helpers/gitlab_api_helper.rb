@@ -1,13 +1,28 @@
 module GitlabApiHelper
   def stub_add_collaborator_request(username, repo_name, user_token)
-    stub_request(
-      :put,
-      "https://api.github.com/repos/#{repo_name}/collaborators/#{username}"
-    ).with(
-      headers: { 'Authorization' => "token #{user_token}" }
-    ).to_return(
-      status: 204
-    )
+    stub_user_search_request(username, user_token)
+
+    stub_request(:post, "#{gitlab_url}/api/v3/projects/#{repo_name}/members")
+      .with(
+        headers: {
+          'Private-Token' => user_token, 'Accept' => 'application/json'
+        },
+        body: 'user_id=1&access_level=30'
+      ).to_return(
+        status: 204
+      )
+  end
+
+  def stub_search_user_request(username, user_token)
+    stub_request(:get, "#{gitlab_url}/api/v3/users?search=#{username}")
+      .with(
+        headers: {
+          'Private-Token' => user_token, 'Accept' => 'application/json'
+        }
+      ).to_return(
+          status: 200,
+          body: fixture('gitlab_users.json').gsub('testing_user', username)
+      )
   end
 
   def stub_remove_collaborator_request(username, repo_name, user_token)
@@ -29,8 +44,7 @@ module GitlabApiHelper
       headers: { 'Authorization' => "token #{token}" }
     ).to_return(
       status: 200,
-      body: File.read('spec/support/fixtures/repo.json')
-        .gsub('testing/repo', repo_name),
+      body: fixture('repo.json').gsub('testing/repo', repo_name),
       headers: { 'Content-Type' => 'application/json; charset=utf-8' }
     )
   end
@@ -48,17 +62,17 @@ module GitlabApiHelper
     )
   end
 
-  def stub_hook_creation_request(full_repo_name, callback_endpoint, token)
-    stub_request(
-      :post,
-      "https://api.github.com/repos/#{full_repo_name}/hooks"
-    ).with(
-      body: %({"name":"web","config":{"url":"#{callback_endpoint}"},"events":["pull_request"],"active":true}),
-      headers: { 'Authorization' => "token #{token}" }
-    ).to_return(
-      status: 200,
-      body: File.read('spec/support/fixtures/github_hook_creation_response.json'),
-      headers: { 'Content-Type' => 'application/json; charset=utf-8' }
+  def stub_hook_creation_request(repo_id, callback_endpoint, token)
+    callback_endpoint = CGI.escape(callback_endpoint)
+
+    stub_request(:post, "#{gitlab_url}/api/v3/projects/#{repo_id}/hooks")
+      .with(
+        body: "url=#{callback_endpoint}&merge_requests_events=1",
+        headers: auth_header(token)
+      ).to_return(
+        status: 200,
+        body: fixture('github_hook_creation_response.json'),
+        headers: { 'Content-Type' => 'application/json; charset=utf-8' }
     )
   end
 
@@ -253,7 +267,15 @@ module GitlabApiHelper
     'spec/support/fixtures'
   end
 
+  def fixture(file_name)
+    File.read("#{fixture_dir}/#{file_name}")
+  end
+
   def gitlab_url
     Hound::GITLAB_API_URL
+  end
+
+  def auth_header(token)
+    {'Private-Token' => token, 'Accept' => 'application/json'}
   end
 end
