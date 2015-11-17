@@ -254,13 +254,13 @@ describe GitlabApi do
     it 'makes request to GitHub for creating a success status' do
       api = described_class.new(Hound::GITHUB_TOKEN)
       request = stub_status_request(
-        'test/repo',
+        'repo_id',
         'sha',
         'success',
         'description'
       )
 
-      api.create_success_status('test/repo', 'sha', 'description')
+      api.create_success_status('repo_id', 'sha', 'description')
 
       expect(request).to have_been_requested
     end

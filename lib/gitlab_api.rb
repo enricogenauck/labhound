@@ -94,9 +94,9 @@ class GitlabApi
     )
   end
 
-  def create_success_status(full_repo_name, sha, description)
+  def create_success_status(repo_id, sha, description)
     create_status(
-      repo: full_repo_name,
+      repo: repo_id,
       sha: sha,
       state: 'success',
       description: description
@@ -139,18 +139,13 @@ class GitlabApi
   end
 
   def create_status(repo:, sha:, state:, description:, target_url: nil)
-    # TODO: Investigate if there is such an option in Gitlab
-    #
-    #   client.create_status(
-    #     repo,
-    #     sha,
-    #     state,
-    #     context: 'hound',
-    #     description: description,
-    #     target_url: target_url
-    #   )
-    # rescue Octokit::NotFound
-    #   # noop
+    client.create_commit_comment(
+      repo,
+      sha,
+      description
+    )
+  rescue Octokit::NotFound
+    # noop
   end
 
   def find_id(user_name)

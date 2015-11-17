@@ -232,12 +232,12 @@ module GitlabApiHelper
     )
   end
 
-  def stub_status_request(repo_name, sha, state, description, target_url = nil)
+  def stub_status_request(repo_id, sha, state, description, target_url = nil)
     stub_request(
       :post,
-      "https://api.github.com/repos/#{repo_name}/statuses/#{sha}"
+      "#{gitlab_api_url}/projects/#{repo_id}/repository/commits/#{sha}/comments"
     ).with(
-      headers: { 'Authorization' => "token #{hound_token}" },
+      headers: auth_header(hound_token),
       body: status_request_body(description, state, target_url)
     ).to_return(status_request_return_value)
   end
@@ -250,13 +250,8 @@ module GitlabApiHelper
     }
   end
 
-  def status_request_body(description, state, target_url)
-    {
-      context: 'hound',
-      description: description,
-      state: state,
-      target_url: target_url
-    }
+  def status_request_body(description, _, _)
+    "note=#{description}"
   end
 
   def hound_token
@@ -273,6 +268,10 @@ module GitlabApiHelper
 
   def gitlab_url
     Hound::GITLAB_API_URL
+  end
+
+  def gitlab_api_url
+    Hound::GITLAB_API_URL + GitlabApi::API_VERSION
   end
 
   def auth_header(token)
