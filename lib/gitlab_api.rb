@@ -55,14 +55,10 @@ class GitlabApi
 
     if block_given?
       yield hook
-    else
-      hook
-    end
-  rescue Octokit::UnprocessableEntity => error
-    if error.message.include? 'Hook already exists'
+    elsif hook_already_exists?(hook)
       true
     else
-      raise
+      hook
     end
   end
 
@@ -160,5 +156,12 @@ class GitlabApi
   def find_id(user_name)
     candidates = client.users(search: user_name)
     candidates.detect{|c| c.username == user_name}.id
+  end
+
+  def hook_already_exists?(hook)
+    if hook.errors
+      messages = hook.errors.map{|e| e['message']}
+      ('Hook already exists on this repository').in?(messages)
+    end
   end
 end

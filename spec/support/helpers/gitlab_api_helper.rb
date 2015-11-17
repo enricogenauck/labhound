@@ -76,18 +76,18 @@ module GitlabApiHelper
     )
   end
 
-  def stub_failed_hook_creation_request(full_repo_name, callback_endpoint)
-    stub_request(
-      :post,
-      "https://api.github.com/repos/#{full_repo_name}/hooks"
-    ).with(
-      body: %({"name":"web","config":{"url":"#{callback_endpoint}"},"events":["pull_request"],"active":true}),
-      headers: { 'Authorization' => "token #{hound_token}" }
-    ).to_return(
-      status: 422,
-      body: File.read('spec/support/fixtures/failed_hook.json'),
-      headers: { 'Content-Type' => 'application/json; charset=utf-8' }
-    )
+  def stub_failed_hook_creation_request(repo_id, callback_endpoint)
+    callback_endpoint = CGI.escape(callback_endpoint)
+
+    stub_request(:post, "#{gitlab_url}/api/v3/projects/#{repo_id}/hooks")
+      .with(
+        body: "url=#{callback_endpoint}&merge_requests_events=1",
+        headers: auth_header(hound_token)
+      ).to_return(
+        status: 422,
+        body: File.read('spec/support/fixtures/failed_hook.json'),
+        headers: { 'Content-Type' => 'application/json; charset=utf-8' }
+      )
   end
 
   def stub_failed_status_creation_request(repo_name, sha, state, description)
