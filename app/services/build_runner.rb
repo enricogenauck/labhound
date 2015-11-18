@@ -17,7 +17,7 @@ class BuildRunner
       raise
     end
   rescue Octokit::NotFound
-    if token != Hound::GITHUB_TOKEN
+    if token != Hound::GITLAB_TOKEN
       remove_repo_from_user
     end
     raise
@@ -60,7 +60,7 @@ class BuildRunner
   end
 
   def token
-    @token ||= current_user_with_token.try(:token) || Hound::GITHUB_TOKEN
+    @token ||= current_user_with_token.try(:token) || Hound::GITLAB_TOKEN
   end
 
   def current_user_with_token

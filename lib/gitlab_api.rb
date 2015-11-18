@@ -78,15 +78,13 @@ class GitlabApi
 
   def pull_request_files(project_id, merge_request_id)
     result = client.merge_request_changes(project_id, merge_request_id)
-    result.files.map{|file| Gitlab::ObjectifiedHash.new(file)}
+    result.changes.map{|file| Gitlab::ObjectifiedHash.new(file)}
   end
 
   def file_contents(project_id, filename, sha)
     cache_key = "#{project_id}/#{sha}/#{filename}"
 
-    file_cache[cache_key] ||= Gitlab::ObjectifiedHash.new(
-      client.file_contents(project_id, filename, sha)
-    )
+    file_cache[cache_key] ||= client.file_contents(project_id, filename, sha)
   end
 
   def create_pending_status(full_repo_name, sha, description)

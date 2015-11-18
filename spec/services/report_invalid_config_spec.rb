@@ -3,7 +3,7 @@ require 'rails_helper'
 describe ReportInvalidConfig do
   describe '.run' do
     it 'reports the file as an invalid config file to Github' do
-      stub_const('Hound::GITHUB_TOKEN', 'sometoken')
+      stub_const('Hound::GITLAB_TOKEN', 'sometoken')
       commit_status = stubbed_commit_status(:set_config_error)
       stubbed_build(repo_name: 'thoughtbot/hound')
       pull_request_number = '42'

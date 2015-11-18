@@ -48,7 +48,7 @@ describe Build do
       it "returns the houndci's token" do
         build = build(:build)
 
-        expect(build.user_token).to eq Hound::GITHUB_TOKEN
+        expect(build.user_token).to eq Hound::GITLAB_TOKEN
       end
     end
   end

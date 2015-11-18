@@ -83,17 +83,17 @@ describe PullRequest do
   describe '#commit_files' do
     it 'does not include removed files' do
       added_github_file = double(
-        filename: 'foo.rb',
+        new_path: 'foo.rb',
         status: 'added',
-        patch: 'patch'
+        diff: 'patch'
       )
       modified_github_file = double(
-        filename: 'baz.rb',
+        new_path: 'baz.rb',
         status: 'modified',
-        patch: 'patch'
+        diff: 'patch'
       )
       removed_github_file = double(
-        filename: 'bar.rb',
+        new_path: 'bar.rb',
         status: 'removed'
       )
       all_github_files = [
@@ -109,7 +109,7 @@ describe PullRequest do
       commit_files = pull_request.commit_files
 
       expect(commit_files.map(&:filename)).to match_array(
-        [added_github_file.filename, modified_github_file.filename]
+        [added_github_file.new_path, modified_github_file.new_path]
       )
     end
   end
@@ -125,7 +125,7 @@ describe PullRequest do
 
   def payload_stub(options = {})
     defaults = {
-      full_repo_name: 'org/repo',
+      github_repo_id: '17',
       head_sha: '1234abcd',
       pull_request_number: 5
     }

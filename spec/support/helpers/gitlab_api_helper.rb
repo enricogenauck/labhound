@@ -260,7 +260,7 @@ module GitlabApiHelper
   end
 
   def hound_token
-    Hound::GITHUB_TOKEN
+    Hound::GITLAB_TOKEN
   end
 
   def fixture_dir

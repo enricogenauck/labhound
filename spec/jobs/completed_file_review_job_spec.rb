@@ -27,11 +27,11 @@ describe CompletedFileReviewJob do
       expect(BuildReport).to have_received(:run).with(
         pull_request: pull_request,
         build: build,
-        token: Hound::GITHUB_TOKEN
+        token: Hound::GITLAB_TOKEN
       )
       expect(Payload).to have_received(:new).with(build.payload)
       expect(PullRequest)
-        .to(have_received(:new).with(payload, Hound::GITHUB_TOKEN))
+        .to(have_received(:new).with(payload, Hound::GITLAB_TOKEN))
     end
 
     context "when build doesn't exist" do
@@ -83,7 +83,7 @@ describe CompletedFileReviewJob do
         expect(BuildReport).to have_received(:run).with(
           pull_request: pull_request,
           build: correct_build,
-          token: Hound::GITHUB_TOKEN
+          token: Hound::GITLAB_TOKEN
         )
       end
     end

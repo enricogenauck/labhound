@@ -33,7 +33,7 @@ describe GitlabApi do
   describe '#file_contents' do
     context 'used multiple times with same arguments' do
       it 'requests file content once' do
-        github = described_class.new(Hound::GITHUB_TOKEN)
+        github = described_class.new(Hound::GITLAB_TOKEN)
         repo = 'jimtom/wow'
         filename = '.hound.yml'
         sha = 'abc123'
@@ -100,7 +100,7 @@ describe GitlabApi do
       it 'does not raise' do
         callback_endpoint = 'http://example.com'
         stub_failed_hook_creation_request(full_repo_name, callback_endpoint)
-        api = described_class.new(Hound::GITHUB_TOKEN)
+        api = described_class.new(Hound::GITLAB_TOKEN)
 
         expect do
           api.create_hook(full_repo_name, callback_endpoint)
@@ -110,7 +110,7 @@ describe GitlabApi do
       it 'returns true' do
         callback_endpoint = 'http://example.com'
         stub_failed_hook_creation_request(full_repo_name, callback_endpoint)
-        api = described_class.new(Hound::GITHUB_TOKEN)
+        api = described_class.new(Hound::GITLAB_TOKEN)
 
         expect(api.create_hook(full_repo_name, callback_endpoint)).to eq true
       end
@@ -121,7 +121,7 @@ describe GitlabApi do
     it 'removes pull request web hook' do
       hook_id = '123'
       stub_hook_removal_request(full_repo_name, hook_id)
-      api = described_class.new(Hound::GITHUB_TOKEN)
+      api = described_class.new(Hound::GITLAB_TOKEN)
 
       response = api.remove_hook(full_repo_name, hook_id)
 
@@ -131,7 +131,7 @@ describe GitlabApi do
     it 'yields given block' do
       hook_id = '123'
       stub_hook_removal_request(full_repo_name, hook_id)
-      api = described_class.new(Hound::GITHUB_TOKEN)
+      api = described_class.new(Hound::GITLAB_TOKEN)
       yielded = false
 
       api.remove_hook(full_repo_name, hook_id) do
@@ -144,7 +144,7 @@ describe GitlabApi do
 
   describe '#pull_request_files' do
     it 'returns changed files in a pull request' do
-      api = described_class.new(Hound::GITHUB_TOKEN)
+      api = described_class.new(Hound::GITLAB_TOKEN)
       pull_request = double('PullRequest', full_repo_name: full_repo_name)
       pr_number = 123
       commit_sha = 'abc123'
@@ -193,7 +193,7 @@ describe GitlabApi do
 
   describe '#pull_request_comments' do
     it 'returns comments added to pull request' do
-      api = described_class.new(Hound::GITHUB_TOKEN)
+      api = described_class.new(Hound::GITLAB_TOKEN)
       pull_request = double('PullRequest', full_repo_name: full_repo_name)
       pull_request_id = 253
       commit_sha = 'abc253'
@@ -219,7 +219,7 @@ describe GitlabApi do
 
   describe '#create_pending_status' do
     it 'makes request to GitHub for creating a pending status' do
-      api = described_class.new(Hound::GITHUB_TOKEN)
+      api = described_class.new(Hound::GITLAB_TOKEN)
       request = stub_status_request(
         'test/repo',
         'sha',
@@ -235,7 +235,7 @@ describe GitlabApi do
     describe 'when setting the status returns 404' do
       it 'does not crash' do
         sha = 'abc'
-        api = described_class.new(Hound::GITHUB_TOKEN)
+        api = described_class.new(Hound::GITLAB_TOKEN)
         stub_failed_status_creation_request(
           full_repo_name,
           sha,
@@ -252,7 +252,7 @@ describe GitlabApi do
 
   describe '#create_success_status' do
     it 'makes request to GitHub for creating a success status' do
-      api = described_class.new(Hound::GITHUB_TOKEN)
+      api = described_class.new(Hound::GITLAB_TOKEN)
       request = stub_status_request(
         'repo_id',
         'sha',
@@ -268,7 +268,7 @@ describe GitlabApi do
 
   describe '#create_error_status' do
     it 'makes request to GitHub for creating an error status' do
-      api = described_class.new(Hound::GITHUB_TOKEN)
+      api = described_class.new(Hound::GITLAB_TOKEN)
       request = stub_status_request(
         'test/repo',
         'sha',

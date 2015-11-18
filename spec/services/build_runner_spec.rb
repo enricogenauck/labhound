@@ -41,7 +41,7 @@ describe BuildRunner do
         expect(BuildReport).to have_received(:run).with(
           build: Build.last,
           pull_request: pull_request,
-          token: Hound::GITHUB_TOKEN
+          token: Hound::GITLAB_TOKEN
         )
       end
 

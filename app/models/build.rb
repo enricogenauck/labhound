@@ -19,7 +19,7 @@ class Build < ActiveRecord::Base
   end
 
   def user_token
-    (user && user.token) || Hound::GITHUB_TOKEN
+    (user && user.token) || Hound::GITLAB_TOKEN
   end
 
   private

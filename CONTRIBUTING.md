@@ -65,7 +65,7 @@ for a free [ngrok] account and create a `~/.ngrok` file with the following:
     * Token description: Hound Development
     * Select scopes: `repo` and `user:email`
 
-1. On the confirmation screen, copy the generated token to `HOUND_GITHUB_TOKEN`
+1. On the confirmation screen, copy the generated token to `HOUND_GITLAB_TOKEN`
    in the `.env.local` file. Also update `HOUND_GITHUB_USERNAME` to be your username.
 
 1. Run `foreman start`. Foreman will start the web server and

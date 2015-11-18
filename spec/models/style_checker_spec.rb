@@ -15,9 +15,9 @@ describe StyleChecker do
     end
 
     it 'only fetches content for supported files' do
-      ruby_file = double('GithubFile', filename: 'ruby.rb', patch: 'foo')
-      bogus_file = double('GithubFile', filename: '[:facebook]', patch: 'bar')
-      head_commit = stub_head_commit(ruby_file.filename => '')
+      ruby_file = double('GithubFile', new_path: 'ruby.rb', diff: 'foo')
+      bogus_file = double('GithubFile', new_path: '[:facebook]', diff: 'bar')
+      head_commit = stub_head_commit(ruby_file.new_path => '')
       pull_request = PullRequest.new(payload_stub, 'anything')
       allow(pull_request).to receive(:head_commit).and_return(head_commit)
       allow(pull_request).to receive(:modified_github_files)
@@ -26,9 +26,9 @@ describe StyleChecker do
       pull_request_violations(pull_request)
 
       expect(head_commit).to have_received(:file_content)
-        .with(ruby_file.filename)
+        .with(ruby_file.new_path)
       expect(head_commit).not_to have_received(:file_content)
-        .with(bogus_file.filename)
+        .with(bogus_file.new_path)
     end
 
     context 'for a Ruby file' do
