@@ -7,6 +7,7 @@ describe Payload do
   describe '#changed_files' do
     context 'with pull_request data' do
       it 'returns number of changed files' do
+        skip 'TODO: Get number of changed files for merge request event'
         fixture_file = 'spec/support/fixtures/pull_request_opened_event.json'
         payload_json = File.read(fixture_file)
         payload = Payload.new(payload_json)
@@ -28,10 +29,13 @@ describe Payload do
   describe '#head_sha' do
     context 'with pull_request data' do
       it 'returns sha' do
-        data = { 'pull_request' => { 'head' => { 'sha' => 'abc123' } } }
+        data = File.read(
+          'spec/support/fixtures/pull_request_opened_event.json'
+        )
         payload = Payload.new(data)
 
-        expect(payload.head_sha).to eq 'abc123'
+        expect(payload.head_sha)
+          .to eq 'da1560886d4f094c3e6c9ef40349f7d38b5d27d7'
       end
     end
 
@@ -77,15 +81,18 @@ describe Payload do
 
   describe '#pull_request_number' do
     it 'returns the pull request number' do
-      data = { 'number' => 2 }
+      data = File.read(
+        'spec/support/fixtures/pull_request_opened_event.json'
+      )
       payload = Payload.new(data)
 
-      expect(payload.pull_request_number).to eq 2
+      expect(payload.pull_request_number).to eq 99
     end
   end
 
   describe '#repository_owner_name' do
     it "returns the owner of the repo's name" do
+      skip 'This data is not supported in merge request payload currently'
       data = {
         'repository' => {
           'owner' => {
@@ -102,6 +109,7 @@ describe Payload do
 
   describe '#repository_owner_id' do
     it "returns the owner of the repo's ID" do
+      skip 'This data is not supported in merge request payload currently'
       data = {
         'repository' => {
           'owner' => {
@@ -117,6 +125,7 @@ describe Payload do
   end
 
   describe '#repository_owner_is_organization?' do
+    skip 'Organizations are not supported in Gitlab currently'
     context 'when the repository owner is a user' do
       it 'returns false' do
         payload_json = {
@@ -135,6 +144,7 @@ describe Payload do
 
     context 'when the repository owner is an organization' do
       it 'returns true' do
+        skip 'Organizations are not supported in Gitlab currently'
         payload_json = {
           'repository' => {
             'owner' => {
@@ -154,8 +164,10 @@ describe Payload do
     context 'when repo is private' do
       it 'returns true' do
         payload_json = {
-          'repository' => {
-            'private' => true
+          'object_attributes' => {
+            'source' => {
+              'visibility_level' => 0
+            }
           }
         }
         payload = Payload.new(payload_json)
@@ -167,8 +179,10 @@ describe Payload do
     context 'when repo is public' do
       it 'returns false' do
         payload_json = {
-          'repository' => {
-            'private' => false
+          'object_attributes' => {
+            'source' => {
+              'visibility_level' => 10
+            }
           }
         }
         payload = Payload.new(payload_json)
@@ -187,22 +201,22 @@ describe Payload do
 
       expect(payload.build_data).to eq(
         {
-          'number' => 2,
-          'action' => 'opened',
+          'number' => 99,
+          'action' => 'open',
           'pull_request' => {
-            'changed_files' => 1,
+            'changed_files' => 0,
             'head' => {
-              'sha' => '498b81cd038f8a3ac02f035a8537b7ddcff38a81'
+              'sha' => 'da1560886d4f094c3e6c9ef40349f7d38b5d27d7'
             }
           },
           'repository' => {
-            'id' => 2937493,
-            'full_name' => 'salbertson/life',
+            'id' => 14,
+            'full_name' => 'awesome_space/awesome_project',
             'private' => false,
             'owner' => {
-              'id' => 154463,
-              'login' => 'salbertson',
-              'type' => 'User'
+              'id' => nil,
+              'login' => nil,
+              'type' => nil
             }
           }
         }

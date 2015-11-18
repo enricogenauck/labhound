@@ -42,6 +42,8 @@ describe BuildsController, '#create' do
 
   context 'when number of changed files is at the threshold or above' do
     it 'enqueues large build job' do
+      skip 'Number of changed files currently not supported'
+      
       allow(LargeBuildJob).to receive(:perform_later)
       payload_data = File.read(
         'spec/support/fixtures/pull_request_event_with_many_files.json'

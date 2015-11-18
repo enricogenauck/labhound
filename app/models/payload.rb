@@ -6,23 +6,23 @@ class Payload
   end
 
   def head_sha
-    pull_request.fetch('head', {})['sha']
+    pull_request.fetch('last_commit', {})['id']
   end
 
   def github_repo_id
-    repository['id']
+    pull_request['target_project_id']
   end
 
   def full_repo_name
-    repository['full_name']
+    repository['namespace'] + '/' + repository['name']
   end
 
   def pull_request_number
-    data['number']
+    pull_request['id']
   end
 
   def action
-    data['action']
+    pull_request['action']
   end
 
   def changed_files
@@ -34,19 +34,20 @@ class Payload
   end
 
   def pull_request?
-    pull_request.present?
+    data['object_kind'] == 'merge_request'
   end
 
   def repository_owner_id
-    repository['owner']['id']
+    # Currently not supported in merge request payload
   end
 
   def repository_owner_name
-    repository['owner']['login']
+    # Currently not supported in merge request payload
   end
 
   def repository_owner_is_organization?
-    repository['owner']['type'] == GitlabApi::ORGANIZATION_TYPE
+    # Organizations are not supported in Gitlab currently
+    false
   end
 
   def build_data
@@ -66,14 +67,14 @@ class Payload
         'owner' => {
           'id' => repository_owner_id,
           'login' => repository_owner_name,
-          'type' => repository['owner']['type']
+          'type' => nil
         }
       }
     }
   end
 
   def private_repo?
-    repository['private']
+    repository['visibility_level'] == 0
   end
 
   private
@@ -87,10 +88,10 @@ class Payload
   end
 
   def pull_request
-    data.fetch('pull_request', {})
+    data.fetch('object_attributes', {})
   end
 
   def repository
-    @repository ||= data['repository']
+    @repository ||= pull_request['source']
   end
 end

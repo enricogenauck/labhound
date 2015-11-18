@@ -245,7 +245,11 @@ module GitlabApiHelper
   end
 
   def status_request_body(description, _ = nil, _ = nil)
-    "note=#{description}"
+    if description.respond_to?(:to_str)
+      "note=#{URI.escape(description)}"
+    else
+      description
+    end
   end
 
   def comment_body(path, line, comment)

@@ -5,10 +5,10 @@ feature 'Builds' do
     File.read('spec/support/fixtures/pull_request_opened_event.json')
   end
   let(:parsed_payload) { JSON.parse(payload) }
-  let(:repo_name) { parsed_payload['repository']['full_name'] }
-  let(:repo_id) { parsed_payload['repository']['id'] }
-  let(:pr_sha) { parsed_payload['pull_request']['head']['sha'] }
-  let(:pr_number) { parsed_payload['number'] }
+  let(:repo_name) { parsed_payload['object_attributes']['target']['name'] }
+  let(:repo_id) { parsed_payload['object_attributes']['target_project_id'] }
+  let(:pr_sha) { parsed_payload['object_attributes']['last_commit']['id'] }
+  let(:pr_number) { parsed_payload['object_attributes']['id'] }
 
   context 'with payload nesting' do
     scenario 'a successful build with custom config' do

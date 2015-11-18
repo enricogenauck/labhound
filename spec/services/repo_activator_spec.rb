@@ -4,16 +4,6 @@ describe RepoActivator do
   describe '#activate' do
     context 'when repo is public' do
       context 'when repo belongs to an org' do
-        it 'will not add Hound to repo' do
-          repo = create(:repo, private: false, in_organization: true)
-          api = stub_github_api
-          activator = build_activator(repo: repo)
-
-          activator.activate
-
-          expect(api).not_to have_received(:add_collaborator)
-        end
-
         it 'marks repo as active' do
           repo = create(:repo, private: false, in_organization: true)
           stub_github_api
@@ -233,29 +223,15 @@ describe RepoActivator do
   end
 
   describe '#deactivate' do
-    context 'when repo is public' do
-      it 'does not remove Hound from the repo' do
-        repo = create(:repo, private: false)
-        activator = build_activator(repo: repo)
-        api = stub_github_api
+    it 'removes Hound from the repo' do
+      repo = create(:repo, private: true)
+      activator = build_activator(repo: repo)
+      api = stub_github_api
 
-        activator.deactivate
+      activator.deactivate
 
-        expect(api).not_to have_received(:remove_collaborator)
-      end
-    end
-
-    context 'when repo is private' do
-      it 'removes Hound from the repo' do
-        repo = create(:repo, private: true)
-        activator = build_activator(repo: repo)
-        api = stub_github_api
-
-        activator.deactivate
-
-        expect(api).to have_received(:remove_collaborator)
-          .with(repo.full_github_name, Hound::GITLAB_USERNAME)
-      end
+      expect(api).to have_received(:remove_collaborator)
+        .with(repo.github_id, Hound::GITLAB_USERNAME)
     end
 
     context 'when repo deactivation succeeds' do
@@ -306,19 +282,6 @@ describe RepoActivator do
         expect(GitlabApi).to receive(:new).and_raise(error)
 
         expect { activator.deactivate }.to raise_error(error)
-      end
-    end
-
-    context 'when removing houndci user from org fails' do
-      it 'returns true' do
-        repo = build(:repo, private: true)
-        activator = build_activator(repo: repo)
-        api = stub_github_api
-        allow(api).to receive(:remove_collaborator).and_return(false)
-
-        result = activator.deactivate
-
-        expect(result).to be true
       end
     end
   end
