@@ -144,7 +144,7 @@ class GitlabApi
       sha,
       description
     )
-  rescue Octokit::NotFound
+  rescue NoMethodError
     # noop
   end
 

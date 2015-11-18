@@ -25,12 +25,14 @@ module GitlabApiHelper
       )
   end
 
-  def stub_remove_collaborator_request(username, repo_name, user_token)
+  def stub_remove_collaborator_request(username, repo_id, user_token)
+    stub_search_user_request(username, user_token)
+
     stub_request(
       :delete,
-      "https://api.github.com/repos/#{repo_name}/collaborators/#{username}"
+      "#{gitlab_api_url}/projects/#{repo_id}/members/1"
     ).with(
-      headers: { 'Authorization' => "token #{user_token}" }
+      headers: auth_header(user_token)
     ).to_return(
       status: 204
     )
@@ -90,18 +92,13 @@ module GitlabApiHelper
       )
   end
 
-  def stub_failed_status_creation_request(repo_name, sha, state, description)
+  def stub_failed_status_creation_request(repo_id, sha, state, description)
     stub_request(
       :post,
-      "https://api.github.com/repos/#{repo_name}/statuses/#{sha}"
+      "#{gitlab_api_url}/projects/#{repo_id}/repository/commits/#{sha}/comments"
     ).with(
-      headers: { 'Authorization' => "token #{hound_token}" },
-      body: {
-        context: 'hound',
-        description: description,
-        state: state,
-        target_url: nil
-      }
+      headers: auth_header(hound_token),
+      body: status_request_body(description)
     ).to_return(
       status: 404,
       headers: { 'Content-Type' => 'application/json; charset=utf-8' }
@@ -109,9 +106,9 @@ module GitlabApiHelper
   end
 
   def stub_hook_removal_request(full_repo_name, hook_id)
-    url = "https://api.github.com/repos/#{full_repo_name}/hooks/#{hook_id}"
+    url = "#{gitlab_api_url}/hooks/#{hook_id}"
     stub_request(:delete, url)
-      .with(headers: { 'Authorization' => /^token \w+$/ })
+      .with(headers: auth_header(hound_token))
       .to_return(status: 204)
   end
 
@@ -201,18 +198,15 @@ module GitlabApiHelper
     ).to_return(status: 200)
   end
 
-  def stub_pull_request_comments_request(full_repo_name, pull_request_number)
-    comments_body =
-      File.read('spec/support/fixtures/pull_request_comments.json')
-    url = "https://api.github.com/repos/#{full_repo_name}/pulls/" +
-      "#{pull_request_number}/comments"
-    headers = { 'Content-Type' => 'application/json; charset=utf-8' }
+  def stub_pull_request_comments_request(repo_id, pull_request_number)
+    comments_body = fixture('pull_request_comments.json')
+    url           = "#{gitlab_api_url}/projects/#{repo_id}/merge_request/" \
+                    "#{pull_request_number}/comments"
+    headers       = { 'Content-Type' => 'application/json; charset=utf-8' }
 
-    stub_request(:get, "#{url}?per_page=100")
-      .with(headers: { 'Authorization' => "token #{hound_token}" })
-      .to_return(status: 200, body: comments_body, headers: headers.merge(
-        'Link' => %(<#{url}?page=2&per_page=100>; rel="next")
-      ))
+    stub_request(:get, url)
+      .with(headers: auth_header(hound_token))
+      .to_return(status: 200, body: comments_body, headers: headers)
     stub_request(:get, "#{url}?page=2&per_page=100")
       .to_return(status: 200, body: '[]', headers: headers)
   end
@@ -250,7 +244,7 @@ module GitlabApiHelper
     }
   end
 
-  def status_request_body(description, _, _)
+  def status_request_body(description, _ = nil, _ = nil)
     "note=#{description}"
   end
 

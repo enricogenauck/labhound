@@ -212,8 +212,8 @@ describe GitlabApi do
         pull_request_id
       )
 
-      expect(comments.size).to eq(4)
-      expect(comments.first.body).to eq expected_comment
+      expect(comments.size).to eq(2)
+      expect(comments.first.note).to eq expected_comment
     end
   end
 
