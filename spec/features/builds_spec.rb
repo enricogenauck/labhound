@@ -5,7 +5,11 @@ feature 'Builds' do
     File.read('spec/support/fixtures/pull_request_opened_event.json')
   end
   let(:parsed_payload) { JSON.parse(payload) }
-  let(:repo_name) { parsed_payload['object_attributes']['target']['name'] }
+  let(:repo_name) do
+    parsed_payload['object_attributes']['source']['namespace'] +
+    '/' +
+    parsed_payload['object_attributes']['source']['name']
+  end
   let(:repo_id) { parsed_payload['object_attributes']['target_project_id'] }
   let(:pr_sha) { parsed_payload['object_attributes']['last_commit']['id'] }
   let(:pr_number) { parsed_payload['object_attributes']['id'] }
@@ -38,13 +42,13 @@ feature 'Builds' do
     create(:repo, :active, github_id: repo_id, full_github_name: repo_name)
     stub_github_requests_with_violations
     stub_commit_request(repo_name, pr_sha)
-    stub_pull_request_comments_request(repo_name, pr_number)
+    stub_pull_request_comments_request(repo_id, pr_number)
     comment_request = stub_simple_comment_request
     stub_status_requests(repo_name, pr_sha)
 
     page.driver.post builds_path, payload: payload
 
-    expect(comment_request).to have_been_requested
+    expect(comment_request).to have_been_made.times(2)
   end
 
   def stub_github_requests_with_no_violations
@@ -81,7 +85,8 @@ feature 'Builds' do
   def stub_simple_comment_request
     stub_request(
       :post,
-      "https://api.github.com/repos/#{repo_name}/pulls/#{pr_number}/comments"
+      "#{Hound::GITLAB_API_URL}/api/v3/projects/#{repo_name}/repository" \
+      "/commits/#{pr_sha}/comments"
     )
   end
 end

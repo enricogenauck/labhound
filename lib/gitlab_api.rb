@@ -82,8 +82,11 @@ class GitlabApi
   end
 
   def file_contents(project_id, filename, sha)
-    file_cache["#{project_id}/#{sha}/#{filename}"] ||=
+    cache_key = "#{project_id}/#{sha}/#{filename}"
+
+    file_cache[cache_key] ||= Gitlab::ObjectifiedHash.new(
       client.file_contents(project_id, filename, sha)
+    )
   end
 
   def create_pending_status(full_repo_name, sha, description)

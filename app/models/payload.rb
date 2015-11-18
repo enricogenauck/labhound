@@ -52,23 +52,17 @@ class Payload
 
   def build_data
     {
-      'number' => pull_request_number,
-      'action' => action,
-      'pull_request' => {
-        'changed_files' => changed_files,
-        'head' => {
-          'sha' => head_sha
-        }
-      },
-      'repository' => {
-        'id' => github_repo_id,
-        'full_name' => full_repo_name,
-        'private' => private_repo?,
-        'owner' => {
-          'id' => repository_owner_id,
-          'login' => repository_owner_name,
-          'type' => nil
-        }
+      'object_kind' => data['object_kind'],
+      'object_attributes' => {
+        'id' => pull_request_number,
+        'action' => action,
+        'target_project_id' => github_repo_id,
+        'source' => {
+          'name' => repository['name'],
+          'namespace' => repository['namespace'],
+          'visibility_level' => repository['visibility_level']
+        },
+        'last_commit' => { 'id' => head_sha }
       }
     }
   end

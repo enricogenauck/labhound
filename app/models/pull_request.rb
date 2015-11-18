@@ -26,7 +26,7 @@ class PullRequest
   end
 
   def opened?
-    payload.action == 'opened'
+    payload.action == 'open'
   end
 
   def synchronize?

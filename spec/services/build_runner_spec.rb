@@ -106,6 +106,7 @@ describe BuildRunner do
       end
 
       it 'upserts repository owner' do
+        skip 'TODO: Implement'
         owner_github_id = 56789
         owner_name = 'john'
         repo = create(:repo, :active)

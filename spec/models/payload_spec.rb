@@ -201,22 +201,18 @@ describe Payload do
 
       expect(payload.build_data).to eq(
         {
-          'number' => 99,
-          'action' => 'open',
-          'pull_request' => {
-            'changed_files' => 0,
-            'head' => {
-              'sha' => 'da1560886d4f094c3e6c9ef40349f7d38b5d27d7'
-            }
-          },
-          'repository' => {
-            'id' => 14,
-            'full_name' => 'awesome_space/awesome_project',
-            'private' => false,
-            'owner' => {
-              'id' => nil,
-              'login' => nil,
-              'type' => nil
+          'object_kind' => 'merge_request',
+          'object_attributes' => {
+            'id' => 99,
+            'action' => 'open',
+            'target_project_id' => 14,
+            'source' => {
+              'name' => 'awesome_project',
+              'namespace' => 'awesome_space',
+              'visibility_level' => 20
+            },
+            'last_commit' => {
+              'id' => 'da1560886d4f094c3e6c9ef40349f7d38b5d27d7'
             }
           }
         }

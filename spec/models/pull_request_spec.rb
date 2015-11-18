@@ -9,7 +9,7 @@ describe PullRequest do
   describe '#opened?' do
     context 'when payload action is opened' do
       it 'returns true' do
-        pull_request = PullRequest.new(payload_stub(action: 'opened'), token)
+        pull_request = PullRequest.new(payload_stub(action: 'open'), token)
 
         expect(pull_request).to be_opened
       end
