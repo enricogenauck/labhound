@@ -33,28 +33,28 @@ describe GitlabApi do
   describe '#file_contents' do
     context 'used multiple times with same arguments' do
       it 'requests file content once' do
-        client = double('Octokit::Client', contents: 'filecontent')
-        allow(Octokit::Client).to receive(:new).and_return(client)
-        token = 'authtoken'
-        github = described_class.new(token)
+        github = described_class.new(Hound::GITHUB_TOKEN)
         repo = 'jimtom/wow'
         filename = '.hound.yml'
         sha = 'abc123'
 
+        stub_contents_request(
+          repo_name: repo,
+          sha: sha,
+          file: filename
+        )
+
+        expect(github.client).to receive(:file_contents).with(
+          repo,
+          filename,
+          sha
+        ).once.and_call_original
+
         contents = github.file_contents(repo, filename, sha)
         same_contents = github.file_contents(repo, filename, sha)
 
-        expect(contents).to eq 'filecontent'
+        expect(contents).to be_present
         expect(same_contents).to eq contents
-        expect(Octokit::Client).to have_received(:new).with(
-          access_token: token,
-          auto_paginate: true
-        )
-        expect(client).to have_received(:contents).with(
-          repo,
-          path: filename,
-          ref: sha
-        ).once
       end
     end
   end
@@ -157,7 +157,7 @@ describe GitlabApi do
       files = api.pull_request_files(pull_request.full_repo_name, pr_number)
 
       expect(files.size).to eq(1)
-      expect(files.first.filename).to eq 'config/unicorn.rb'
+      expect(files.first.new_path).to eq 'config/unicorn.rb'
     end
   end
 

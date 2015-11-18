@@ -1,14 +1,55 @@
-[
-  {
-    "additions": 22,
-    "blob_url": "https://github.com/thoughtbot/hound/blob/55ec63080d30509e148b78d50a2f39fb239c41bc/config/unicorn.rb",
-    "changes": 22,
-    "contents_url": "https://api.github.com/repos/thoughtbot/hound/contents/config/unicorn.rb?ref=55ec63080d30509e148b78d50a2f39fb239c41bc",
-    "deletions": 0,
-    "filename": "config/unicorn.rb",
-    "patch": "@@ -0,0 +1,22 @@\n+worker_processes Integer(ENV[\"WEB_CONCURRENCY\"] || 3)\n+timeout 15\n+preload_app true\n+\n+before_fork do |server, worker|\n+  Signal.trap 'TERM' do\n+    puts 'Unicorn master intercepting TERM and sending myself QUIT instead'\n+    Process.kill 'QUIT', Process.pid\n+  end\n+\n+  defined?(ActiveRecord::Base) and\n+    ActiveRecord::Base.connection.disconnect!\n+end\n+\n+after_fork do |server, worker|\n+  Signal.trap 'TERM' do\n+    puts 'Unicorn worker intercepting TERM and doing nothing. Wait for master to send QUIT'\n+  end\n+\n+  defined?(ActiveRecord::Base) and\n+    ActiveRecord::Base.establish_connection\n+end",
-    "raw_url": "https://github.com/thoughtbot/hound/raw/55ec63080d30509e148b78d50a2f39fb239c41bc/config/unicorn.rb",
-    "sha": "f6e59b8f27c8c5d92403f62b79cc1644c0fa2f73",
-    "status": "added"
-  }
-]
+{
+  "id": 21,
+  "iid": 1,
+  "project_id": 4,
+  "title": "Blanditiis beatae suscipit hic assumenda et molestias nisi asperiores repellat et.",
+  "description": "Qui voluptatibus placeat ipsa alias quasi. Deleniti rem ut sint. Optio velit qui distinctio.",
+  "work_in_progress": false,
+  "state": "reopened",
+  "created_at": "2015-02-02T19:49:39.159Z",
+  "updated_at": "2015-02-02T20:08:49.959Z",
+  "target_branch": "secret_token",
+  "source_branch": "version-1-9",
+  "upvotes": 0,
+  "downvotes": 0,
+  "author": {
+    "name": "Chad Hamill",
+    "username": "jarrett",
+    "id": 5,
+    "state": "active",
+    "avatar_url": "http://www.gravatar.com/avatar/b95567800f828948baf5f4160ebb2473?s=40&d=identicon"
+  },
+  "assignee": {
+    "name": "Administrator",
+    "username": "root",
+    "id": 1,
+    "state": "active",
+    "avatar_url": "http://www.gravatar.com/avatar/e64c7d89f26bd1972efa854d13d7dd61?s=40&d=identicon"
+  },
+  "source_project_id": 4,
+  "target_project_id": 4,
+  "labels": [ ],
+  "milestone": {
+    "id": 5,
+    "iid": 1,
+    "project_id": 4,
+    "title": "v2.0",
+    "description": "Assumenda aut placeat expedita exercitationem labore sunt enim earum.",
+    "state": "closed",
+    "created_at": "2015-02-02T19:49:26.013Z",
+    "updated_at": "2015-02-02T19:49:26.013Z",
+    "due_date": null
+  },
+  "files": [
+    {
+    "old_path": "config/unicorn.rb",
+    "new_path": "config/unicorn.rb",
+    "a_mode": "100644",
+    "b_mode": "100644",
+    "diff": "--- a/VERSION\ +++ b/VERSION\ @@ -1 +1 @@\ -1.9.7\ +1.9.8",
+    "new_file": false,
+    "renamed_file": false,
+    "deleted_file": false
+    }
+  ]
+}

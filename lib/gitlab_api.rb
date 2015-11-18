@@ -77,7 +77,8 @@ class GitlabApi
   end
 
   def pull_request_files(project_id, merge_request_id)
-    client.merge_request_changes(project_id, merge_request_id)
+    result = client.merge_request_changes(project_id, merge_request_id)
+    result.files.map{|file| Gitlab::ObjectifiedHash.new(file)}
   end
 
   def file_contents(project_id, filename, sha)

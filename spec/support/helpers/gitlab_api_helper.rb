@@ -1,6 +1,6 @@
 module GitlabApiHelper
   def stub_add_collaborator_request(username, repo_name, user_token)
-    stub_user_search_request(username, user_token)
+    stub_search_user_request(username, user_token)
 
     stub_request(:post, "#{gitlab_url}/api/v3/projects/#{repo_name}/members")
       .with(
@@ -128,13 +128,13 @@ module GitlabApiHelper
     )
   end
 
-  def stub_pull_request_files_request(full_repo_name, pull_request_number)
+  def stub_pull_request_files_request(repo_id, pull_request_number)
     stub_request(
       :get,
-      "https://api.github.com/repos/#{full_repo_name}/pulls/#{pull_request_number}/files?per_page=100"
-    ).with(
-      headers: { 'Authorization' => "token #{hound_token}" }
-    ).to_return(
+      "#{gitlab_api_url}/projects/#{repo_id}/merge_request/" \
+      "#{pull_request_number}/changes"
+    ).with(headers: auth_header(hound_token))
+    .to_return(
       status: 200,
       body: File.read('spec/support/fixtures/pull_request_files.json'),
       headers: { 'Content-Type' => 'application/json; charset=utf-8' }
@@ -142,17 +142,19 @@ module GitlabApiHelper
   end
 
   def stub_contents_request(options = {})
-    fixture = options.fetch(:fixture, 'contents.json')
-    file = options.fetch(:file, 'config/unicorn.rb')
+    fixture_file = options.fetch(:fixture, 'contents.json')
+    file    = options.fetch(:file, 'config/unicorn.rb')
+    repo    = options[:repo_name]
+    sha     = options[:sha]
 
     stub_request(
       :get,
-      "https://api.github.com/repos/#{options[:repo_name]}/contents/#{file}?ref=#{options[:sha]}"
-    ).with(
-      headers: { 'Authorization' => "token #{hound_token}" }
+      "#{gitlab_api_url}/projects/#{repo}/repository/blobs/" \
+      "#{sha}?filepath=#{file}"
+    ).with(headers: auth_header(hound_token)
     ).to_return(
       status: 200,
-      body: File.read("spec/support/fixtures/#{fixture}"),
+      body: fixture(fixture_file),
       headers: { 'Content-Type' => 'application/json; charset=utf-8' }
     )
   end
@@ -177,7 +179,7 @@ module GitlabApiHelper
   def stub_repos_requests(token)
     stub_request(
       :get,
-      "#{gitlab_url}/projects"
+      "#{gitlab_api_url}/projects"
     ).with(
       headers: { 'PRIVATE-TOKEN' => token }
     ).to_return(
