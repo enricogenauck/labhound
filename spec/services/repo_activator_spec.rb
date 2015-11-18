@@ -78,7 +78,7 @@ describe RepoActivator do
           activator.activate
 
           expect(api).to have_received(:add_collaborator)
-            .with(repo.full_github_name, Hound::GITHUB_USERNAME)
+            .with(repo.github_id, Hound::GITLAB_USERNAME)
         end
 
         it 'marks repo as active' do
@@ -147,7 +147,7 @@ describe RepoActivator do
           end
 
           expect(github).to have_received(:create_hook).with(
-            repo.full_github_name,
+            repo.github_id,
             URI.join("https://#{ENV['HOST']}", 'builds').to_s
           )
         end
@@ -162,7 +162,7 @@ describe RepoActivator do
           activator.activate
 
           expect(github).to have_received(:create_hook).with(
-            repo.full_github_name,
+            repo.github_id,
             URI.join("http://#{ENV['HOST']}", 'builds').to_s
           )
         end
@@ -254,7 +254,7 @@ describe RepoActivator do
         activator.deactivate
 
         expect(api).to have_received(:remove_collaborator)
-          .with(repo.full_github_name, Hound::GITHUB_USERNAME)
+          .with(repo.full_github_name, Hound::GITLAB_USERNAME)
       end
     end
 

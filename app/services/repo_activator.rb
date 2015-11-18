@@ -40,11 +40,11 @@ class RepoActivator
   end
 
   def remove_hound_from_repo
-    github.remove_collaborator(repo.full_github_name, Hound::GITHUB_USERNAME)
+    github.remove_collaborator(repo.github_id, Hound::GITLAB_USERNAME)
   end
 
   def add_hound_to_repo
-    github.add_collaborator(repo.github_id, Hound::GITHUB_USERNAME)
+    github.add_collaborator(repo.github_id, Hound::GITLAB_USERNAME)
   end
 
   def github
@@ -58,7 +58,7 @@ class RepoActivator
   end
 
   def delete_webhook
-    github.remove_hook(repo.full_github_name, repo.hook_id) do
+    github.remove_hook(repo.github_id, repo.hook_id) do
       repo.update(hook_id: nil)
     end
   end

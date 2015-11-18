@@ -38,15 +38,14 @@ module GitlabApiHelper
     )
   end
 
-  def stub_repo_request(repo_name, token)
+  def stub_repo_request(repo_id, token)
     stub_request(
       :get,
-      "https://api.github.com/repos/#{repo_name}"
-    ).with(
-      headers: { 'Authorization' => "token #{token}" }
-    ).to_return(
+      "#{gitlab_api_url}/projects/#{repo_id}"
+    ).with(headers: auth_header(token))
+    .to_return(
       status: 200,
-      body: fixture('repo.json').gsub('testing/repo', repo_name),
+      body: fixture('repo.json').gsub('testing/repo', repo_id.to_s),
       headers: { 'Content-Type' => 'application/json; charset=utf-8' }
     )
   end
@@ -105,10 +104,12 @@ module GitlabApiHelper
     )
   end
 
-  def stub_hook_removal_request(full_repo_name, hook_id)
+  def stub_hook_removal_request(full_repo_name, hook_id, token = nil)
     url = "#{gitlab_api_url}/hooks/#{hook_id}"
+    token ||= hound_token
+
     stub_request(:delete, url)
-      .with(headers: auth_header(hound_token))
+      .with(headers: auth_header(token))
       .to_return(
         status: 200,
         body: fixture('hook.json')

@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 feature 'Repo list', js: true do
-  let(:username) { ENV.fetch('HOUND_GITHUB_USERNAME') }
+  let(:username) { ENV.fetch('HOUND_GITLAB_USERNAME') }
   let(:user) { create(:user, token_scopes: 'public_repo,user:email') }
 
   scenario 'signed in user views repo list' do
@@ -87,15 +87,16 @@ feature 'Repo list', js: true do
     repo = create(:repo, private: false)
     repo.users << user
     hook_url = "http://#{ENV['HOST']}/builds"
-    stub_repo_request(repo.full_github_name, token)
+    stub_repo_request(repo.github_id, token)
     stub_add_collaborator_request(username, repo.full_github_name, token)
-    stub_hook_creation_request(repo.full_github_name, hook_url, token)
+    stub_hook_creation_request(repo.github_id, hook_url, token)
 
     sign_in_as(user, token)
     find('li.repo .toggle').click
 
-    expect(page).to have_css('.active')
+    sleep(3)
     expect(user.repos.active.count).to eq(1)
+    expect(page).to have_css('.active')
 
     visit repos_path
 
@@ -108,12 +109,13 @@ feature 'Repo list', js: true do
     repo = create(:repo, private: false, full_github_name: 'testing/repo')
     repo.users << user
     hook_url = "http://#{ENV['HOST']}/builds"
-    stub_repo_with_org_request(repo.full_github_name, token)
-    stub_hook_creation_request(repo.full_github_name, hook_url, token)
+    stub_repo_with_org_request(repo.github_id, token)
+    stub_hook_creation_request(repo.github_id, hook_url, token)
 
     sign_in_as(user, token)
     find('.repos .toggle').click
 
+    sleep(3)
     expect(page).to have_css('.active')
     expect(user.repos.active.count).to eq(1)
 
@@ -127,13 +129,14 @@ feature 'Repo list', js: true do
     token = 'letmein'
     repo = create(:repo, :active)
     repo.users << user
-    stub_repo_request(repo.full_github_name, token)
-    stub_hook_removal_request(repo.full_github_name, repo.hook_id)
+    stub_repo_request(repo.github_id, token)
+    stub_hook_removal_request(repo.full_github_name, repo.hook_id, token)
     stub_remove_collaborator_request(username, repo.full_github_name, token)
 
     sign_in_as(user, token)
     find('.repos .toggle').click
 
+    sleep(3)
     expect(page).not_to have_css('.active')
     expect(user.repos.active.count).to eq(0)
 
@@ -147,13 +150,14 @@ feature 'Repo list', js: true do
     token = 'letmein'
     repo = create(:repo, :active, private: true)
     repo.users << user
-    stub_repo_request(repo.full_github_name, token)
-    stub_hook_removal_request(repo.full_github_name, repo.hook_id)
-    stub_remove_collaborator_request(username, repo.full_github_name, token)
+    stub_repo_request(repo.github_id, token)
+    stub_hook_removal_request(repo.github_id, repo.hook_id, token)
+    stub_remove_collaborator_request(username, repo.github_id, token)
 
     sign_in_as(user, token)
     find('.repos .toggle').click
 
+    sleep(3)
     expect(page).not_to have_css('.active')
     expect(user.repos.active.count).to eq(0)
 
