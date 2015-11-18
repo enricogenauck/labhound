@@ -109,7 +109,10 @@ module GitlabApiHelper
     url = "#{gitlab_api_url}/hooks/#{hook_id}"
     stub_request(:delete, url)
       .with(headers: auth_header(hound_token))
-      .to_return(status: 204)
+      .to_return(
+        status: 200,
+        body: fixture('hook.json')
+      )
   end
 
   def stub_commit_request(full_repo_name, commit_sha)
@@ -184,18 +187,12 @@ module GitlabApiHelper
     )
   end
 
-  def stub_comment_request(full_repo_name, pull_request_number, comment, commit_sha, file, line_number)
+  def stub_comment_request(repo_id, _, comment, sha, file, line_number)
     stub_request(
       :post,
-      "https://api.github.com/repos/#{full_repo_name}/pulls/#{pull_request_number}/comments"
-    ).with(
-      body: {
-        body: comment,
-        commit_id: commit_sha,
-        path: file,
-        position: line_number
-      }.to_json
-    ).to_return(status: 200)
+      "#{gitlab_api_url}/projects/#{repo_id}/repository/commits/#{sha}/comments"
+    ).with(body: comment_body(file, line_number, comment))
+    .to_return(status: 200)
   end
 
   def stub_pull_request_comments_request(repo_id, pull_request_number)
@@ -246,6 +243,13 @@ module GitlabApiHelper
 
   def status_request_body(description, _ = nil, _ = nil)
     "note=#{description}"
+  end
+
+  def comment_body(path, line, comment)
+    "path=#{path}&" \
+    "line=#{line}&" \
+    'line_type=new&' \
+    "note=#{URI.escape(comment)}"
   end
 
   def hound_token
