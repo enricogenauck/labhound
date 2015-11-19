@@ -156,7 +156,7 @@ module GitlabApiHelper
     ).to_return(
       status: 200,
       body: fixture(fixture_file),
-      headers: { 'Content-Type' => 'application/json; charset=utf-8' }
+      headers: { 'Content-Type' => 'text/plain; charset=utf-8' }
     )
   end
 

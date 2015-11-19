@@ -41,10 +41,10 @@ feature 'Builds' do
   scenario 'a failed build' do
     create(:repo, :active, github_id: repo_id, full_github_name: repo_name)
     stub_github_requests_with_violations
-    stub_commit_request(repo_name, pr_sha)
+    stub_commit_request(repo_id, pr_sha)
     stub_pull_request_comments_request(repo_id, pr_number)
     comment_request = stub_simple_comment_request
-    stub_status_requests(repo_name, pr_sha)
+    stub_status_requests(repo_id, pr_sha)
 
     page.driver.post builds_path, payload: payload
 
@@ -68,15 +68,15 @@ feature 'Builds' do
   end
 
   def stub_github_requests_with_violations
-    stub_pull_request_files_request(repo_name, pr_number)
+    stub_pull_request_files_request(repo_id, pr_number)
     stub_contents_request(
-      repo_name: repo_name,
+      repo_name: repo_id,
       sha: pr_sha,
       file: '.hound.yml',
       fixture: 'config_contents.json'
     )
     stub_contents_request(
-      repo_name: repo_name,
+      repo_name: repo_id,
       sha: pr_sha,
       fixture: 'contents_with_violations.json'
     )
