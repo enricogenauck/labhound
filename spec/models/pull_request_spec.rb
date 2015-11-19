@@ -25,22 +25,22 @@ describe PullRequest do
     end
   end
 
-  describe '#synchronize?' do
-    context 'when payload action is synchronize' do
+  describe '#updated?' do
+    context 'when payload action is update' do
       it 'returns true' do
-        payload = payload_stub(action: 'synchronize')
+        payload = payload_stub(action: 'update')
         pull_request = PullRequest.new(payload, token)
 
-        expect(pull_request).to be_synchronize
+        expect(pull_request).to be_updated
       end
     end
 
-    context 'when payload action is not synchronize' do
+    context 'when payload action is not update' do
       it 'returns false' do
-        payload = payload_stub(action: 'notsynchronize')
+        payload = payload_stub(action: 'notupdate')
         pull_request = PullRequest.new(payload, token)
 
-        expect(pull_request).not_to be_synchronize
+        expect(pull_request).not_to be_updated
       end
     end
   end

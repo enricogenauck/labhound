@@ -29,8 +29,8 @@ class PullRequest
     payload.action == 'open'
   end
 
-  def synchronize?
-    payload.action == 'synchronize'
+  def updated?
+    payload.action == 'update'
   end
 
   def head_commit

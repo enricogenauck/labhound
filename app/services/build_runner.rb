@@ -39,7 +39,7 @@ class BuildRunner
   end
 
   def relevant_pull_request?
-    pull_request.opened? || pull_request.synchronize?
+    pull_request.opened? || pull_request.updated?
   end
 
   def review_files(build)
@@ -109,7 +109,7 @@ class BuildRunner
 
   def commit_status
     @commit_status ||= CommitStatus.new(
-      repo_name: payload.full_repo_name,
+      repo_name: payload.github_repo_id,
       sha: payload.head_sha,
       token: token
     )

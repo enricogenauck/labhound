@@ -73,6 +73,8 @@ class GitlabApi
   end
 
   def pull_request_comments(project_id, merge_request_id)
+    puts "*"*20
+    puts token
     client.merge_request_comments(project_id, merge_request_id)
   end
 

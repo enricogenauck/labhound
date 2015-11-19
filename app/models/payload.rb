@@ -3,6 +3,8 @@ class Payload
 
   def data
     @data ||= parse_data
+    Rails.logger.error @data.inspect
+    @data
   end
 
   def head_sha
