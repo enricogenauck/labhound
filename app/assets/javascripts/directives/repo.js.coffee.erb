@@ -78,10 +78,7 @@ App.directive 'repo', ['Subscription', 'StripeCheckout', 'User', (Subscription, 
 
     scope.toggle = ->
       if scope.repo.active
-        if scope.repo.stripe_subscription_id
-          deleteSubscription()
-        else
-          deactivateRepo()
+        deactivateRepo()
       else
-        createSubscription()
+        activateRepo()
 ]
