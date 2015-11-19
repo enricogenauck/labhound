@@ -85,7 +85,7 @@ feature 'Builds' do
   def stub_simple_comment_request
     stub_request(
       :post,
-      "#{Hound::GITLAB_API_URL}/api/v3/projects/#{repo_name}/repository" \
+      "#{Hound::GITLAB_API_URL}/api/v3/projects/#{repo_id}/repository" \
       "/commits/#{pr_sha}/comments"
     )
   end

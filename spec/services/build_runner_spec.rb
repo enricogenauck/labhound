@@ -94,12 +94,12 @@ describe BuildRunner do
         build_runner.run
 
         expect(github_api).to have_received(:create_pending_status).with(
-          repo_name,
+          repo.github_id,
           'headsha',
           I18n.t(:pending_status)
         )
         expect(github_api).to have_received(:create_success_status).with(
-          repo_name,
+          repo.github_id,
           'headsha',
           I18n.t(:complete_status, count: 3)
         )
@@ -381,7 +381,7 @@ describe BuildRunner do
       build_runner.set_internal_error
 
       expect(github_api).to have_received(:create_error_status).with(
-        repo.name,
+        repo.github_id,
         'somesha',
         I18n.t(:hound_error_status)
       )

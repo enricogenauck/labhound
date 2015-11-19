@@ -84,17 +84,17 @@ describe PullRequest do
     it 'does not include removed files' do
       added_github_file = double(
         new_path: 'foo.rb',
-        status: 'added',
-        diff: 'patch'
+        diff: 'patch',
+        deleted_file: false
       )
       modified_github_file = double(
         new_path: 'baz.rb',
-        status: 'modified',
-        diff: 'patch'
+        diff: 'patch',
+        deleted_file: false
       )
       removed_github_file = double(
         new_path: 'bar.rb',
-        status: 'removed'
+        deleted_file: true
       )
       all_github_files = [
         added_github_file,
@@ -127,7 +127,8 @@ describe PullRequest do
     defaults = {
       github_repo_id: '17',
       head_sha: '1234abcd',
-      pull_request_number: 5
+      pull_request_number: 5,
+      action: 'open'
     }
     double('Payload', defaults.merge(options))
   end

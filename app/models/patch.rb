@@ -33,6 +33,14 @@ class Patch
   private
 
   def lines
+    lines_without_header
+  end
+
+  def lines_without_header
+    lines_with_header.drop(2)
+  end
+
+  def lines_with_header
     @body.lines
   end
 end

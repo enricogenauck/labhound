@@ -169,9 +169,9 @@ describe GitlabApi do
       commit_sha = 'commitsha'
       file = 'test.rb'
       patch_position = 123
-      commit = double('Commit', repo_name: full_repo_name, sha: commit_sha)
+      commit = double('Commit', repo_name: repo_id, sha: commit_sha)
       request = stub_comment_request(
-        full_repo_name,
+        repo_id,
         pull_request_number,
         comment,
         commit_sha,

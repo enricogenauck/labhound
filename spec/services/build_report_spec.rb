@@ -36,7 +36,7 @@ describe BuildReport do
             run_service(file_review.build)
 
             expect(github_api).to have_received(:create_success_status).with(
-              file_review.build.repo_name,
+              file_review.build.repo_github_id,
               file_review.build.commit_sha,
               '1 violation found.'
             )
@@ -57,7 +57,7 @@ describe BuildReport do
             run_service(file_review.build)
 
             expect(github_api).to have_received(:create_error_status).with(
-              file_review.build.repo_name,
+              file_review.build.repo_github_id,
               file_review.build.commit_sha,
               '1 violation found.'
             )
@@ -110,7 +110,7 @@ describe BuildReport do
         run_service(file_review.build)
 
         expect(github_api).to have_received(:create_success_status).with(
-          file_review.build.repo_name,
+          file_review.build.repo_github_id,
           file_review.build.commit_sha,
           I18n.t(:complete_status, count: 0)
         )

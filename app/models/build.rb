@@ -9,6 +9,7 @@ class Build < ActiveRecord::Base
   validates :repo, presence: true
 
   delegate :name, to: :repo, prefix: true
+  delegate :github_id, to: :repo, prefix: true
 
   def completed?
     file_reviews.where(completed_at: nil).empty?

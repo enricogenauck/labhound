@@ -50,15 +50,21 @@ class PullRequest
   end
 
   def modified_github_files
-    github_files = user_github.pull_request_files(repo_id, number)
-
     github_files.select do |github_file|
-      github_file.status != FILE_REMOVED_STATUS
+      !github_file.deleted_file
     end
   end
 
   def user_github
     @user_github ||= GitlabApi.new(token)
+  end
+
+  def github_files
+    if updated?
+      user_github.commit_files(repo_id, payload.head_sha)
+    else
+      user_github.pull_request_files(repo_id, number)
+    end
   end
 
   def number

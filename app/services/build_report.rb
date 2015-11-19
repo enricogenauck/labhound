@@ -51,7 +51,7 @@ class BuildReport
 
   def commit_status
     CommitStatus.new(
-      repo_name: build.repo_id,
+      repo_name: build.repo_github_id,
       sha: build.commit_sha,
       token: token
     )

@@ -73,14 +73,16 @@ class GitlabApi
   end
 
   def pull_request_comments(project_id, merge_request_id)
-    puts "*"*20
-    puts token
     client.merge_request_comments(project_id, merge_request_id)
   end
 
   def pull_request_files(project_id, merge_request_id)
     result = client.merge_request_changes(project_id, merge_request_id)
     result.changes.map{|file| Gitlab::ObjectifiedHash.new(file)}
+  end
+
+  def commit_files(project_id, sha)
+    client.commit_diff(project_id, sha)
   end
 
   def file_contents(project_id, filename, sha)
