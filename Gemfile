@@ -35,13 +35,14 @@ gem 'puma'
 gem 'rails', '4.2.4'
 gem 'resque', '~> 1.25.0'
 gem 'resque-scheduler'
-gem 'resque-sentry'
 gem 'rubocop', '0.34.2'
 gem 'sass-rails'
 gem 'split', require: 'split/dashboard'
 gem 'stripe'
 gem 'uglifier', '>= 2.7.2'
 gem 'rest-client', '>= 1.8.0'
+gem 'dotenv-rails'
+gem 'foreman'
 
 group :staging, :production do
   gem 'rack-timeout'
@@ -51,12 +52,10 @@ end
 
 group :development, :test do
   gem 'pry-byebug'
-  gem 'dotenv-rails'
-  gem 'foreman'
   gem 'jasmine-rails'
   gem 'poltergeist'
   gem 'rspec-rails', '>= 3.2'
-  gem 'bundler-audit', require: false
+  gem 'bundler-audit'
 end
 
 group :test do
