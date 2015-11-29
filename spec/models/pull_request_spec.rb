@@ -75,7 +75,7 @@ describe PullRequest do
         commit: commit,
         comment: violation.messages.first,
         filename: violation.filename,
-        patch_position: violation.patch_position
+        patch_position: violation.line_number
       )
     end
   end
@@ -118,7 +118,7 @@ describe PullRequest do
     defaults =  {
       messages: ['A comment'],
       filename: 'test.rb',
-      patch_position: 123
+      line_number: 123
     }
     double('Violation', defaults.merge(options))
   end
