@@ -18,6 +18,5 @@ class CreditCardsController < ApplicationController
     exception = CreditCardUpdateFailed.new(
       "Credit card failed to update for user #{current_user.id}"
     )
-    Raven.capture_exception(exception)
   end
 end

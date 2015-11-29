@@ -35,7 +35,6 @@ class RepoActivator
     yield
   rescue Octokit::Error => error
     add_error(error)
-    Raven.capture_exception(error)
     false
   end
 

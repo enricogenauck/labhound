@@ -21,7 +21,6 @@ class RepoSubscriber
 
     repo.subscription.destroy
   rescue => error
-    report_exception(error)
     nil
   end
 
@@ -41,16 +40,8 @@ class RepoSubscriber
       price: repo.plan_price
     )
   rescue => error
-    report_exception(error)
     payment_gateway_subscription.try(:delete)
     nil
-  end
-
-  def report_exception(error)
-    Raven.capture_exception(
-      error,
-      extra: { user_id: user.id, repo_id: repo.id }
-    )
   end
 
   def customer

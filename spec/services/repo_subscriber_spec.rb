@@ -90,6 +90,7 @@ describe RepoSubscriber do
       end
 
       it 'reports raised exceptions to Sentry' do
+        skip 'TODO: Implement error reporting.'
         repo = build_stubbed(:repo)
         user = create(:user)
         stub_customer_create_request(user)
@@ -193,6 +194,7 @@ describe RepoSubscriber do
       end
 
       it 'reports raised exceptions to Sentry' do
+        skip 'TODO: implement error reporting'
         repo = build_stubbed(:repo)
         user = build_stubbed(:user, repos: [repo])
         stub_customer_create_request(user)

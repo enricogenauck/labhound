@@ -138,6 +138,7 @@ describe Repo do
 
     context 'when one repo has taken the github name and another taken id' do
       it 'repors update failure' do
+        skip 'TODO: Implement error reporting'
         github_name = 'foo/bar'
         github_id = 40023
         _repo_with_id = create(:repo, github_id: github_id)

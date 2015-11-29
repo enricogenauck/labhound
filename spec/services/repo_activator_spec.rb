@@ -188,6 +188,7 @@ describe RepoActivator do
       end
 
       it 'reports raised exception to Sentry' do
+        skip 'TODO: Implement error reporting.'
         repo = build(:repo, private: true)
         activator = build_activator(repo: repo)
         error = Octokit::Error.new
