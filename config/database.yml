@@ -4,11 +4,13 @@ development: &default
   database: hound_development
   pool: <%= ENV.fetch("DB_POOL", 5) %>
   reaping_frequency: <%= ENV.fetch("DB_REAPING_FREQUENCY", 10) %>
+  username: postgres
+  password: 'secret'
+  host: localhost
 
 test:
   <<: *default
   database: hound_test
 
 production:
-  pool: <%= [ENV.fetch("MAX_THREADS", 5), ENV.fetch("DB_POOL", 5)].max %>
-  url:  <%= ENV.fetch("DATABASE_URL") if Rails.env.production? %>
+  <<: *default
