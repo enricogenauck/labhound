@@ -89,6 +89,8 @@ class GitlabApi
     cache_key = "#{project_id}/#{sha}/#{filename}"
 
     file_cache[cache_key] ||= client.file_contents(project_id, filename, sha)
+  rescue NoMethodError
+    # noop, file not found
   end
 
   def create_pending_status(full_repo_name, sha, description)
