@@ -4,9 +4,9 @@ development: &default
   database: hound_development
   pool: <%= ENV.fetch("DB_POOL", 5) %>
   reaping_frequency: <%= ENV.fetch("DB_REAPING_FREQUENCY", 10) %>
-  username: postgres
-  password: 'secret'
-  host: localhost
+  # username: postgres
+  # password: 'secret'
+  # host: localhost
 
 test:
   <<: *default

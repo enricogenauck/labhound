@@ -3,12 +3,7 @@
     .va-cell
       = link_to repos_path, class: "logo-link" do
         %h1
-          Hound
-  %ul.pull-left
-    %li
-      = link_to "Docs", configuration_path, class: "docs"
-    %li
-      = link_to "FAQ", faq_path, class: "faq"
+          Labhound
   %ul.pull-right
     - if signed_in?
       %li
@@ -19,10 +14,5 @@
       %li
         = link_to t("sign_out"), sign_out_path, class: "sign-out"
     - else
-      %li
-        = link_to "Pricing", root_path(anchor: "pricing"), class: "pricing"
-      %li
-        = link_to "https://twitter.com/houndci", target: "_blank", class: "tweet-us" do
-          %span @houndci
       %li.auth-container
         = render "application/auth_button"
