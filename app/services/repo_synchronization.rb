@@ -27,7 +27,7 @@ class RepoSynchronization
       private: !!attributes['public'],
       github_id: attributes['id'],
       full_github_name: attributes['path_with_namespace'],
-      in_organization: attributes['owner']['type'] == configured_organization,
+      in_organization: owner && owner.organization,
       owner: owner
     }
   end
@@ -40,9 +40,5 @@ class RepoSynchronization
         organization: owner_attributes['type'] == GitlabApi::ORGANIZATION_TYPE
       )
     end
-  end
-
-  def configured_organization
-    GitlabApi::ORGANIZATION_TYPE
   end
 end
