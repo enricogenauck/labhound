@@ -59,7 +59,7 @@ describe Config::JavaScript do
 
           expect { config.content }.to raise_error(
             Config::ParserError,
-            /757: unexpected token at 'XXX\n'/
+            /776: unexpected token at 'XXX\n'/
           )
         end
       end

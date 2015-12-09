@@ -33,11 +33,13 @@ class RepoSynchronization
   end
 
   def upsert_owner(owner_attributes)
-    Owner.upsert(
-      github_id: owner_attributes['id'],
-      name: owner_attributes['name'],
-      organization: owner_attributes['type'] == GitlabApi::ORGANIZATION_TYPE
-    )
+    if owner_attributes.present?
+      Owner.upsert(
+        github_id: owner_attributes['id'],
+        name: owner_attributes['name'],
+        organization: owner_attributes['type'] == GitlabApi::ORGANIZATION_TYPE
+      )
+    end
   end
 
   def configured_organization
