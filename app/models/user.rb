@@ -23,7 +23,9 @@ class User < ActiveRecord::Base
   end
 
   def has_repos_with_missing_information?
-    repos.where('in_organization IS NULL OR private IS NULL').count > 0
+    # TODO implement for gitlab
+    # repos.where('in_organization IS NULL OR private IS NULL').count > 0
+    false
   end
 
   def has_active_repos?

@@ -75,6 +75,7 @@ describe User do
   describe '#has_repos_with_missing_information?' do
     context 'with repo without organization info' do
       it 'returns true' do
+        skip 'TODO: Implement for gitlab'
         user = create(:user)
         repo = create(:repo, in_organization: nil)
         user.repos << repo
@@ -85,6 +86,7 @@ describe User do
 
     context 'with repo without privacy info' do
       it 'return true' do
+        skip 'TODO: Implement for gitlab'
         user = create(:user)
         repo = create(:repo, private: nil)
         user.repos << repo
@@ -95,6 +97,7 @@ describe User do
 
     context 'with repo without organization and privacy info' do
       it 'returns true' do
+        skip 'TODO: Implement for gitlab'
         user = create(:user)
         repo = create(:repo, in_organization: nil, private: nil)
         user.repos << repo
