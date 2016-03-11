@@ -28,7 +28,7 @@ class GitlabApi
   # end
 
   def repos
-    client.projects
+    client.projects.auto_paginate
   end
 
   def repo(repo_name)
