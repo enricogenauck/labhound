@@ -27,7 +27,7 @@ define postgresql::server::role(
     $environment  = "NEWPGPASSWD=${password_hash}"
     $password_sql = "ENCRYPTED PASSWORD '\$NEWPGPASSWD'"
   } else {
-    $password_sql = ''
+    $password_sql = undef
     $environment  = []
   }
 
